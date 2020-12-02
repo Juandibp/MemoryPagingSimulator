@@ -26,7 +26,6 @@ public class MainController {
     private GlobalConfig conf;
     
     public MainController(){
-        this.conf = new GlobalConfig("holas mis queridos", "Hola :D");
         this.mainWindow = new MainWindow(this);
         this.configDialog = new ConfigDialog(this.mainWindow, true, conf);
     }
@@ -60,7 +59,6 @@ public class MainController {
     }
     
     public void printConfig(){
-        System.out.println(conf.setting1);
     }
 
 }
