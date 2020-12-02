@@ -26,11 +26,6 @@ public class ConfigDialog extends javax.swing.JDialog {
     public ConfigDialog(java.awt.Frame parent, boolean modal, GlobalConfig conf) {
         super(parent, modal);
         this.conf = conf;
-        try {
-            this.editConf = (GlobalConfig) conf.clone();
-        } catch (CloneNotSupportedException ex) {
-            Logger.getLogger(ConfigDialog.class.getName()).log(Level.SEVERE, null, ex);
-        }
         initComponents();
     }
 

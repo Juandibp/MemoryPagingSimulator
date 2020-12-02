@@ -11,16 +11,64 @@ package com.itcr.memorypagingsimulator;
  */
 public class GlobalConfig {
     
-    String setting1;
-    String setting2;
+    enum FetchPolicySetting {DEMAND, PRE_PAGING}
+    enum PlacementPolicySetting {FIRST_AVAILABLE, NEXT_AVAILABLE}
+    enum ReplacementPolicySetting {LRU, FIFO, LFU, MRU,SECOND_CHANCE}
+    enum ResidentSetSizeSetting {FIXED, VARIABLE}
+    enum ReplacementScopeSetting {GLOBAL, LOCAL}
     
-    public GlobalConfig(String s1, String s2){
-        this.setting1 = s1;
-        this.setting2 = s2;
+    /***/
+    FetchPolicySetting fetchPolicy;
+    /***/
+    PlacementPolicySetting placementPolicy;
+    /***/
+    ReplacementPolicySetting replacementPolicy;
+    /***/
+    ResidentSetSizeSetting residentSetSize;
+    /***/
+    ReplacementScopeSetting replacementScope;
+    /***/
+    int loadControl;
+
+    public GlobalConfig(
+            FetchPolicySetting fetchPolicy, 
+            PlacementPolicySetting placementPolicy, 
+            ReplacementPolicySetting replacementPolicy, 
+            ResidentSetSizeSetting residentSetSize, 
+            ReplacementScopeSetting ReplacementScope, 
+            int loadControl) {
+        this.fetchPolicy = fetchPolicy;
+        this.placementPolicy = placementPolicy;
+        this.replacementPolicy = replacementPolicy;
+        this.residentSetSize = residentSetSize;
+        this.replacementScope = ReplacementScope;
+        this.loadControl = loadControl;
     }
     
-    public Object clone() throws CloneNotSupportedException { 
-        return super.clone(); 
-    } 
+    public GlobalConfig() {
+        this(
+                FetchPolicySetting.DEMAND,
+                PlacementPolicySetting.FIRST_AVAILABLE,
+                ReplacementPolicySetting.FIFO,
+                ResidentSetSizeSetting.FIXED,
+                ReplacementScopeSetting.GLOBAL,
+                5
+        );
+    }
     
+    public GlobalConfig cloneConfig(){
+        return new GlobalConfig(
+            this.fetchPolicy,
+            this.placementPolicy,
+            this.replacementPolicy,
+            this.residentSetSize ,
+            this.replacementScope,
+            this.loadControl
+        );
+    }
+    
+    
+    
+    
+        
 }
