@@ -5,10 +5,42 @@
  */
 package com.itcr.memorypagingsimulator.algorithms;
 
+import com.itcr.memorypagingsimulator.algorithms.models.Frames;
+import com.itcr.memorypagingsimulator.algorithms.models.Reference;
+import java.util.LinkedList;
+
 /**
  *
  * @author juand
  */
-public class FIFOPageReplacement {
+public class FIFOPageReplacement extends AbstractPageReplacement {
+    @Override
+    protected void allocate() {
+        LinkedList<Integer> queue = new LinkedList<>();
+        Frames past = new Frames(frames);
+        for(Reference r: references){
+            int ref = r.getReference();
+            Frames f = r.getFrames();
+            f.copyAll(past);
+            System.out.println("FIFOAlloc.allocate( )" + ref + " " + f.contains(ref));
+            if(!f.contains(ref)){
+                faults++;
+                queue.addLast(ref);
+                if(f.thereIsAnEmptyFrame()){
+                    System.out.println("empty");
+                    f.set(f.getEmptyFrame(), ref);
+                }else{
+                    System.out.println("victim");
+                    int victim = queue.removeFirst();
+                    f.swap(victim, ref);
+                }
+            }
+
+            past.copyAll(f);
+
+            }
+
+	}
+
     
 }
