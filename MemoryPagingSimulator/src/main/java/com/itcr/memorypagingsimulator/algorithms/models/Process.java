@@ -3,15 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.itcr.memorypagingsimulator;
-
-import java.util.ArrayList;
+package com.itcr.memorypagingsimulator.algorithms.models;
 
 /**
  *
- * @author juand
+ * @author lopez
  */
-public class MainMemory {
-    private int maxFrames;
-    private ArrayList<Frame> frameList = new ArrayList<>();
+public class Process {
+    
 }

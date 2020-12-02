@@ -29,6 +29,8 @@ public class GlobalConfig {
     ReplacementScopeSetting replacementScope;
     /***/
     int loadControl;
+    int pageSize;
+    
 
     public GlobalConfig(
             FetchPolicySetting fetchPolicy, 
@@ -36,13 +38,15 @@ public class GlobalConfig {
             ReplacementPolicySetting replacementPolicy, 
             ResidentSetSizeSetting residentSetSize, 
             ReplacementScopeSetting ReplacementScope, 
-            int loadControl) {
+            int loadControl,
+            int pageSize) {
         this.fetchPolicy = fetchPolicy;
         this.placementPolicy = placementPolicy;
         this.replacementPolicy = replacementPolicy;
         this.residentSetSize = residentSetSize;
         this.replacementScope = ReplacementScope;
         this.loadControl = loadControl;
+        this.pageSize = pageSize;
     }
     
     public GlobalConfig() {
@@ -52,7 +56,8 @@ public class GlobalConfig {
                 ReplacementPolicySetting.FIFO,
                 ResidentSetSizeSetting.FIXED,
                 ReplacementScopeSetting.GLOBAL,
-                5
+                5,
+                2000
         );
     }
     
@@ -63,7 +68,8 @@ public class GlobalConfig {
             this.replacementPolicy,
             this.residentSetSize ,
             this.replacementScope,
-            this.loadControl
+            this.loadControl,
+            this.pageSize
         );
     }
     
