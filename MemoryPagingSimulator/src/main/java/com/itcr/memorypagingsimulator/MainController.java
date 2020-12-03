@@ -58,6 +58,10 @@ public class MainController {
         this.configDialog.setVisible(true);
     }
     
+    public void updateConfig(GlobalConfig newConfig){
+        this.conf = newConfig;
+    }
+    
     public void printConfig(){
     }
 

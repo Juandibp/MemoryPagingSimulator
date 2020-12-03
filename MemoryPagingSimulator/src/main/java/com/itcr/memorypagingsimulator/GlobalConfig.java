@@ -16,6 +16,7 @@ public class GlobalConfig {
     enum ReplacementPolicySetting {LRU, FIFO, LFU, MRU,SECOND_CHANCE}
     enum ResidentSetSizeSetting {FIXED, VARIABLE}
     enum ReplacementScopeSetting {GLOBAL, LOCAL}
+    enum CleaningPolicySetting {DEMAND, PRE_CLEANING}
     
     /***/
     FetchPolicySetting fetchPolicy;
@@ -28,26 +29,39 @@ public class GlobalConfig {
     /***/
     ReplacementScopeSetting replacementScope;
     /***/
+    CleaningPolicySetting cleaningPolicy; 
+    /** Amount in processes that can be in main memory at the same time. */
     int loadControl;
+    /** How many addresses can be referenced in a page */
     int pageSize;
-    
+    /** Amount of frames in main memory */
+    int primaryMemoryFrames;
+    /** Amount of pages that can exist in total */
+    int secondaryMemoryPages;
 
     public GlobalConfig(
             FetchPolicySetting fetchPolicy, 
             PlacementPolicySetting placementPolicy, 
-            ReplacementPolicySetting replacementPolicy, 
+            ReplacementPolicySetting replacementPolicy,
             ResidentSetSizeSetting residentSetSize, 
-            ReplacementScopeSetting ReplacementScope, 
-            int loadControl,
-            int pageSize) {
+            ReplacementScopeSetting replacementScope,
+            CleaningPolicySetting cleaningPolicy,
+            int loadControl, 
+            int pageSize, 
+            int primaryMemoryFrames, 
+            int secondaryMemoryPages) {
         this.fetchPolicy = fetchPolicy;
         this.placementPolicy = placementPolicy;
         this.replacementPolicy = replacementPolicy;
         this.residentSetSize = residentSetSize;
-        this.replacementScope = ReplacementScope;
+        this.replacementScope = replacementScope;
+        this.cleaningPolicy = cleaningPolicy;
         this.loadControl = loadControl;
         this.pageSize = pageSize;
+        this.primaryMemoryFrames = primaryMemoryFrames;
+        this.secondaryMemoryPages = secondaryMemoryPages;
     }
+
     
     public GlobalConfig() {
         this(
@@ -56,8 +70,11 @@ public class GlobalConfig {
                 ReplacementPolicySetting.FIFO,
                 ResidentSetSizeSetting.FIXED,
                 ReplacementScopeSetting.GLOBAL,
+                CleaningPolicySetting.DEMAND,
                 5,
-                2000
+                2000,
+                500,
+                3000
         );
     }
     
@@ -68,8 +85,11 @@ public class GlobalConfig {
             this.replacementPolicy,
             this.residentSetSize ,
             this.replacementScope,
+            this.cleaningPolicy,
             this.loadControl,
-            this.pageSize
+            this.pageSize,
+            this.primaryMemoryFrames,
+            this.secondaryMemoryPages
         );
     }
     
