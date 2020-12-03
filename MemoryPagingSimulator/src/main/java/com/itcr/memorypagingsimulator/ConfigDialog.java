@@ -29,7 +29,6 @@ import javax.swing.event.ListDataListener;
 public class ConfigDialog extends javax.swing.JDialog {
     
     private GlobalConfig conf;
-    private GlobalConfig editConf;
     private Dimension initialSize;
     public ArrayList<GlobalConfig.FetchPolicySetting> bla;
 
@@ -41,7 +40,6 @@ public class ConfigDialog extends javax.swing.JDialog {
         var test = new ArrayList<>(Arrays.asList(GlobalConfig.FetchPolicySetting.values())).stream().map(elem -> elem.name()).collect(Collectors.toList());
         System.out.println(Util.getEnumAsStringArray(GlobalConfig.ReplacementPolicySetting.class));
         this.conf = conf == null ? new GlobalConfig() : conf;
-        this.editConf = this.conf.cloneConfig();
         initComponents();
         this.initialSize = this.getSize();
     }
@@ -55,29 +53,29 @@ public class ConfigDialog extends javax.swing.JDialog {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jComboBox5 = new javax.swing.JComboBox<>();
+        cleaningPolicyComboBox = new javax.swing.JComboBox<>();
         jButton4 = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         physicalMemorySpinner = new javax.swing.JSpinner();
         fetchPolicyComboBox = new javax.swing.JComboBox<>();
-        jComboBox4 = new javax.swing.JComboBox<>();
-        jComboBox1 = new javax.swing.JComboBox<>();
+        replacementScopeComboBox = new javax.swing.JComboBox<>();
+        placementPolicyComboBox = new javax.swing.JComboBox<>();
         jLabel10 = new javax.swing.JLabel();
-        jComboBox2 = new javax.swing.JComboBox<>();
+        replacementPolicyComboBox = new javax.swing.JComboBox<>();
         jLabel6 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jLabel11 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         saveConfigButton = new javax.swing.JButton();
-        jSpinner1 = new javax.swing.JSpinner();
-        jComboBox3 = new javax.swing.JComboBox<>();
+        virtualMemorySpinner = new javax.swing.JSpinner();
+        residentSetSizeComboBox = new javax.swing.JComboBox<>();
         jSeparator1 = new javax.swing.JSeparator();
         jLabel9 = new javax.swing.JLabel();
-        jSpinner2 = new javax.swing.JSpinner();
-        jSpinner3 = new javax.swing.JSpinner();
+        pageSizeSpinner = new javax.swing.JSpinner();
+        loadControlSpiner = new javax.swing.JSpinner();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setResizable(false);
@@ -87,9 +85,9 @@ public class ConfigDialog extends javax.swing.JDialog {
             }
         });
 
-        jComboBox5.setModel(new DefaultComboBoxModel<String>(Util.getEnumAsStringArray(GlobalConfig.CleaningPolicySetting.class).toArray(new String[0])));
-        jComboBox5.setMaximumSize(null);
-        jComboBox5.setMinimumSize(new java.awt.Dimension(360, 680));
+        cleaningPolicyComboBox.setModel(new DefaultComboBoxModel<String>(Util.getEnumAsStringArray(GlobalConfig.CleaningPolicySetting.class).toArray(new String[0])));
+        cleaningPolicyComboBox.setMaximumSize(null);
+        cleaningPolicyComboBox.setMinimumSize(new java.awt.Dimension(360, 680));
 
         jButton4.setBackground(new java.awt.Color(82, 76, 76));
         jButton4.setText("Cancelar");
@@ -115,20 +113,20 @@ public class ConfigDialog extends javax.swing.JDialog {
         fetchPolicyComboBox.setMaximumSize(null);
         fetchPolicyComboBox.setMinimumSize(new java.awt.Dimension(360, 680));
 
-        jComboBox4.setModel(new DefaultComboBoxModel<String>(Util.getEnumAsStringArray(GlobalConfig.ReplacementScopeSetting.class).toArray(new String[0])));
-        jComboBox4.setMaximumSize(null);
-        jComboBox4.setMinimumSize(new java.awt.Dimension(360, 680));
+        replacementScopeComboBox.setModel(new DefaultComboBoxModel<String>(Util.getEnumAsStringArray(GlobalConfig.ReplacementScopeSetting.class).toArray(new String[0])));
+        replacementScopeComboBox.setMaximumSize(null);
+        replacementScopeComboBox.setMinimumSize(new java.awt.Dimension(360, 680));
 
-        jComboBox1.setModel(new DefaultComboBoxModel<String>(Util.getEnumAsStringArray(GlobalConfig.PlacementPolicySetting.class).toArray(new String[0])));
-        jComboBox1.setMaximumSize(null);
-        jComboBox1.setMinimumSize(new java.awt.Dimension(360, 680));
+        placementPolicyComboBox.setModel(new DefaultComboBoxModel<String>(Util.getEnumAsStringArray(GlobalConfig.PlacementPolicySetting.class).toArray(new String[0])));
+        placementPolicyComboBox.setMaximumSize(null);
+        placementPolicyComboBox.setMinimumSize(new java.awt.Dimension(360, 680));
 
         jLabel10.setText("Frames in Physical memory:");
         jLabel10.setMinimumSize(new java.awt.Dimension(360, 680));
 
-        jComboBox2.setModel(new DefaultComboBoxModel<String>(Util.getEnumAsStringArray(GlobalConfig.ReplacementPolicySetting.class).toArray(new String[0])));
-        jComboBox2.setMaximumSize(null);
-        jComboBox2.setMinimumSize(new java.awt.Dimension(360, 680));
+        replacementPolicyComboBox.setModel(new DefaultComboBoxModel<String>(Util.getEnumAsStringArray(GlobalConfig.ReplacementPolicySetting.class).toArray(new String[0])));
+        replacementPolicyComboBox.setMaximumSize(null);
+        replacementPolicyComboBox.setMinimumSize(new java.awt.Dimension(360, 680));
 
         jLabel6.setText("Cleaning policy:");
         jLabel6.setMinimumSize(new java.awt.Dimension(360, 680));
@@ -156,13 +154,13 @@ public class ConfigDialog extends javax.swing.JDialog {
             }
         });
 
-        jSpinner1.setMaximumSize(null);
-        jSpinner1.setMinimumSize(new java.awt.Dimension(360, 680));
-        jSpinner1.setValue(4096);
+        virtualMemorySpinner.setMaximumSize(null);
+        virtualMemorySpinner.setMinimumSize(new java.awt.Dimension(360, 680));
+        virtualMemorySpinner.setValue(4096);
 
-        jComboBox3.setModel(new DefaultComboBoxModel<String>(Util.getEnumAsStringArray(GlobalConfig.ResidentSetSizeSetting.class).toArray(new String[0])));
-        jComboBox3.setMaximumSize(null);
-        jComboBox3.setMinimumSize(new java.awt.Dimension(360, 680));
+        residentSetSizeComboBox.setModel(new DefaultComboBoxModel<String>(Util.getEnumAsStringArray(GlobalConfig.ResidentSetSizeSetting.class).toArray(new String[0])));
+        residentSetSizeComboBox.setMaximumSize(null);
+        residentSetSizeComboBox.setMinimumSize(new java.awt.Dimension(360, 680));
 
         jSeparator1.setOrientation(javax.swing.SwingConstants.VERTICAL);
 
@@ -186,10 +184,10 @@ public class ConfigDialog extends javax.swing.JDialog {
                                 .addGap(6, 6, 6)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(fetchPolicyComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 232, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 232, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, 232, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jComboBox3, javax.swing.GroupLayout.PREFERRED_SIZE, 232, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jComboBox4, javax.swing.GroupLayout.PREFERRED_SIZE, 232, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                    .addComponent(placementPolicyComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 232, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(replacementPolicyComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 232, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(residentSetSizeComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 232, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(replacementScopeComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 232, javax.swing.GroupLayout.PREFERRED_SIZE))))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 11, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -202,10 +200,10 @@ public class ConfigDialog extends javax.swing.JDialog {
                                 .addGap(6, 6, 6)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(physicalMemorySpinner, javax.swing.GroupLayout.PREFERRED_SIZE, 232, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jSpinner1, javax.swing.GroupLayout.PREFERRED_SIZE, 232, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jSpinner2, javax.swing.GroupLayout.PREFERRED_SIZE, 232, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jSpinner3, javax.swing.GroupLayout.PREFERRED_SIZE, 232, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jComboBox5, javax.swing.GroupLayout.PREFERRED_SIZE, 232, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                    .addComponent(virtualMemorySpinner, javax.swing.GroupLayout.PREFERRED_SIZE, 232, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(pageSizeSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, 232, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(loadControlSpiner, javax.swing.GroupLayout.PREFERRED_SIZE, 232, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(cleaningPolicyComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 232, javax.swing.GroupLayout.PREFERRED_SIZE)))
                             .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -226,21 +224,21 @@ public class ConfigDialog extends javax.swing.JDialog {
                             .addGap(18, 18, 18)
                             .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(placementPolicyComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGap(18, 18, 18)
                             .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(replacementPolicyComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGap(18, 18, 18)
                             .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(jComboBox3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(residentSetSizeComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGap(18, 18, 18)
                             .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGroup(layout.createSequentialGroup()
                             .addGap(22, 22, 22)
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addComponent(jComboBox4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(replacementScopeComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 268, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -249,19 +247,19 @@ public class ConfigDialog extends javax.swing.JDialog {
                         .addGap(18, 18, 18)
                         .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jSpinner1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(virtualMemorySpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(jLabel9)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jSpinner2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(pageSizeSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jSpinner3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(loadControlSpiner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jComboBox5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(cleaningPolicyComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(27, 27, 27)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(saveConfigButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -273,7 +271,22 @@ public class ConfigDialog extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void saveConfigButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveConfigButtonActionPerformed
-        System.err.println("H: " + this.getHeight() + ", W: " + this.getWidth());
+        try{
+            this.conf.setConfig(new GlobalConfig(
+                    GlobalConfig.FetchPolicySetting.valueOf(this.fetchPolicyComboBox.getSelectedItem().toString()), 
+                    GlobalConfig.PlacementPolicySetting.valueOf(this.placementPolicyComboBox.getSelectedItem().toString()), 
+                    GlobalConfig.ReplacementPolicySetting.valueOf(this.replacementPolicyComboBox.getSelectedItem().toString()), 
+                    GlobalConfig.ResidentSetSizeSetting.valueOf(this.residentSetSizeComboBox.getSelectedItem().toString()), 
+                    GlobalConfig.ReplacementScopeSetting.valueOf(this.replacementScopeComboBox.getSelectedItem().toString()), 
+                    GlobalConfig.CleaningPolicySetting.valueOf(this.cleaningPolicyComboBox.getSelectedItem().toString()), 
+                    Integer.parseInt(this.loadControlSpiner.getValue().toString()), 
+                    Integer.parseInt(this.pageSizeSpinner.getValue().toString()), 
+                    Integer.parseInt(this.physicalMemorySpinner.getValue().toString()), 
+                    Integer.parseInt(this.virtualMemorySpinner.getValue().toString())
+            ));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }//GEN-LAST:event_saveConfigButtonActionPerformed
 
     private void formComponentResized(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentResized
@@ -323,13 +336,9 @@ public class ConfigDialog extends javax.swing.JDialog {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JComboBox<String> cleaningPolicyComboBox;
     private javax.swing.JComboBox<String> fetchPolicyComboBox;
     private javax.swing.JButton jButton4;
-    private javax.swing.JComboBox<String> jComboBox1;
-    private javax.swing.JComboBox<String> jComboBox2;
-    private javax.swing.JComboBox<String> jComboBox3;
-    private javax.swing.JComboBox<String> jComboBox4;
-    private javax.swing.JComboBox<String> jComboBox5;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -341,10 +350,14 @@ public class ConfigDialog extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JSeparator jSeparator1;
-    private javax.swing.JSpinner jSpinner1;
-    private javax.swing.JSpinner jSpinner2;
-    private javax.swing.JSpinner jSpinner3;
+    private javax.swing.JSpinner loadControlSpiner;
+    private javax.swing.JSpinner pageSizeSpinner;
     private javax.swing.JSpinner physicalMemorySpinner;
+    private javax.swing.JComboBox<String> placementPolicyComboBox;
+    private javax.swing.JComboBox<String> replacementPolicyComboBox;
+    private javax.swing.JComboBox<String> replacementScopeComboBox;
+    private javax.swing.JComboBox<String> residentSetSizeComboBox;
     private javax.swing.JButton saveConfigButton;
+    private javax.swing.JSpinner virtualMemorySpinner;
     // End of variables declaration//GEN-END:variables
 }

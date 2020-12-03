@@ -93,8 +93,21 @@ public class GlobalConfig {
         );
     }
     
-    
-    
-    
-        
+    public void setConfig(GlobalConfig c){
+        this.fetchPolicy = c.fetchPolicy;
+        this.placementPolicy = c.placementPolicy;
+        this.replacementPolicy = c.replacementPolicy;
+        this.residentSetSize = c.residentSetSize;
+        this.replacementScope = c.replacementScope;
+        this.cleaningPolicy = c.cleaningPolicy;
+        this.loadControl = c.loadControl;
+        this.pageSize = c.pageSize;
+        this.primaryMemoryFrames = c.primaryMemoryFrames;
+        this.secondaryMemoryPages = c.secondaryMemoryPages;
+    }
+
+    @Override
+    public String toString() {
+        return "GlobalConfig{" + "fetchPolicy=" + fetchPolicy + ", placementPolicy=" + placementPolicy + ", replacementPolicy=" + replacementPolicy + ", residentSetSize=" + residentSetSize + ", replacementScope=" + replacementScope + ", cleaningPolicy=" + cleaningPolicy + ", loadControl=" + loadControl + ", pageSize=" + pageSize + ", primaryMemoryFrames=" + primaryMemoryFrames + ", secondaryMemoryPages=" + secondaryMemoryPages + '}';
+    }
 }
