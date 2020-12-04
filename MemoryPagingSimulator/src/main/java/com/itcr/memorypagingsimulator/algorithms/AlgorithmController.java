@@ -7,6 +7,7 @@ package com.itcr.memorypagingsimulator.algorithms;
 
 import com.itcr.memorypagingsimulator.GlobalConfig;
 import com.itcr.memorypagingsimulator.algorithms.models.Frames;
+import com.itcr.memorypagingsimulator.algorithms.models.Page;
 import com.itcr.memorypagingsimulator.algorithms.models.Pages;
 import com.itcr.memorypagingsimulator.algorithms.models.Process;
 import java.util.ArrayList;
@@ -17,11 +18,13 @@ import java.util.ArrayList;
  */
 public class AlgorithmController {
     
-    Pages pages;
-    Frames frames;
-    ReplacementPolicy replacementPolicy;
-    ArrayList<Process> processes;
-    GlobalConfig conf;
+    public Pages pages;
+    public Frames frames;
+    public ReplacementPolicy replacementPolicy;
+    public FetchPolicy fetchPolicy;
+    public ArrayList<Process> processes;
+    public GlobalConfig conf;
+    int pageIdCount = 0;
     int pageFaultCount = 0;
 
     public AlgorithmController(ArrayList<Process> processes, GlobalConfig conf) {
@@ -57,11 +60,23 @@ public class AlgorithmController {
         if(pageCount > conf.secondaryMemoryPages){
             throw new InsuficientMemoryException("No hay suficiente memoria para este proceso");
         }
+        this.processes.add(process);
+        ArrayList<Page> pageTable = new ArrayList<>();
+        for(int i = 0; i<process.getPagesRequired() ; i++ ){
+            Page newPage = new Page(this.pageIdCount, this.pageIdCount * this.conf.pageSize, this.conf.pageSize);
+            pageTable.add(newPage);
+            this.pages.addPage(newPage);
+            this.pageIdCount += 1;
+        }
+        process.setPageTable(pageTable);
     }
     
     //setting up stuff all the way down
     
     public void setConfig() {
+        this.pages = new Pages(conf.secondaryMemoryPages);
+        this.frames = new Frames(conf.primaryMemoryFrames);
+        this.processes = new ArrayList<>();
         this.setFetchPolicy();
         this.setPlacementPolicy();
         this.setReplacementPolicy();
@@ -79,6 +94,7 @@ public class AlgorithmController {
     public void setFetchPolicy(){
         switch (this.conf.fetchPolicy){
             case DEMAND:
+                this.fetchPolicy = new DemandFetchPolicy();
                 break;
             case PRE_PAGING:
                 break;

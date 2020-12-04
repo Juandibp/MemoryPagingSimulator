@@ -56,5 +56,6 @@ public class Pages {
 
     public Pages(int maxPages) {
         this.maxPages = maxPages;
+        this.pageList = new ArrayList<>(maxPages);
     }
 }

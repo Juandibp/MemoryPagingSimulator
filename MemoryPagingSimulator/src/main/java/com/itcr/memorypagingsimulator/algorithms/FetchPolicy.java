@@ -7,6 +7,7 @@ package com.itcr.memorypagingsimulator.algorithms;
 import com.itcr.memorypagingsimulator.algorithms.models.Frames;
 import com.itcr.memorypagingsimulator.algorithms.models.Page;
 import com.itcr.memorypagingsimulator.algorithms.models.Pages;
+import com.itcr.memorypagingsimulator.algorithms.models.Process;
 import java.util.ArrayList;
 
 /**
