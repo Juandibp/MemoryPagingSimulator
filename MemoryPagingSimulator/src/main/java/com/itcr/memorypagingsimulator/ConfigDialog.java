@@ -42,6 +42,7 @@ public class ConfigDialog extends javax.swing.JDialog {
         this.conf = conf == null ? new GlobalConfig() : conf;
         initComponents();
         this.initialSize = this.getSize();
+        this.resetUI();
     }
 
     /**
@@ -93,6 +94,11 @@ public class ConfigDialog extends javax.swing.JDialog {
         jButton4.setText("Cancelar");
         jButton4.setMaximumSize(null);
         jButton4.setMinimumSize(new java.awt.Dimension(360, 680));
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
 
         jLabel1.setText("Fetch policy:");
         jLabel1.setMinimumSize(new java.awt.Dimension(360, 680));
@@ -284,6 +290,7 @@ public class ConfigDialog extends javax.swing.JDialog {
                     Integer.parseInt(this.physicalMemorySpinner.getValue().toString()), 
                     Integer.parseInt(this.virtualMemorySpinner.getValue().toString())
             ));
+            this.setVisible(false);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -293,6 +300,25 @@ public class ConfigDialog extends javax.swing.JDialog {
         if(this.initialSize != null) this.setSize(initialSize);
     }//GEN-LAST:event_formComponentResized
 
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        this.setVisible(false);
+        this.resetUI();
+    }//GEN-LAST:event_jButton4ActionPerformed
+
+    
+    private void resetUI(){
+        this.fetchPolicyComboBox.setSelectedItem(this.conf.fetchPolicy.name());
+        this.placementPolicyComboBox.setSelectedItem(this.conf.placementPolicy.name());
+        this.replacementPolicyComboBox.setSelectedItem(this.conf.replacementPolicy.name());
+        this.residentSetSizeComboBox.setSelectedItem(this.conf.residentSetSize.name());
+        this.replacementPolicyComboBox.setSelectedItem(this.conf.replacementPolicy.name());
+        this.cleaningPolicyComboBox.setSelectedItem(this.conf.cleaningPolicy.name());
+        this.loadControlSpiner.setValue(this.conf.loadControl);
+        this.pageSizeSpinner.setValue(this.conf.pageSize);
+        this.physicalMemorySpinner.setValue(this.conf.primaryMemoryFrames);
+        this.virtualMemorySpinner.setValue(this.conf.secondaryMemoryPages);
+    }
+    
     /**
      * @param args the command line arguments
      */

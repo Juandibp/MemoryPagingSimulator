@@ -38,9 +38,9 @@ public class FIFOPageReplacement extends AbstractPageReplacement {
 
             past.copyAll(f);
 
-            }
+        }
 
-	}
+    }
 
     
 }

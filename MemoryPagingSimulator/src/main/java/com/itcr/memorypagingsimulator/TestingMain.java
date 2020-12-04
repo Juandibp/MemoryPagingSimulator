@@ -5,15 +5,31 @@
  */
 package com.itcr.memorypagingsimulator;
 
+import com.itcr.memorypagingsimulator.algorithms.*;
+import java.util.ArrayList;
+import com.itcr.memorypagingsimulator.algorithms.models.Process;
+
 /**
  *
  * @author lopez
  */
 public class TestingMain {
 
+    GlobalConfig conf = new GlobalConfig();
+    ArrayList<Process> processes = new ArrayList<>();
+    ReplacementPolicy repPolicy;
     
     public static void main(String[] args){
-        MainController m = new MainController();
-        
+        new TestingMain().execTest();
+    }
+    
+    public void execTest(){
+        this.repPolicy = new FIFOPageReplacement();
+        this.processes.add(new Process(0, 20, 2));
+        this.processes.add(new Process(1, 10, 2));
+        this.processes.add(new Process(2, 15, 5));
+        this.processes.add(new Process(3, 3, 0));
+        this.processes.add(new Process(4, 7, 3));
+        this.repPolicy.setParams(new int[] {5,3,4,8,4,2}, 10);
     }
 }

@@ -11,33 +11,33 @@ package com.itcr.memorypagingsimulator;
  */
 public class GlobalConfig {
     
-    enum FetchPolicySetting {DEMAND, PRE_PAGING}
-    enum PlacementPolicySetting {FIRST_AVAILABLE, NEXT_AVAILABLE}
-    enum ReplacementPolicySetting {LRU, FIFO, LFU, MRU,SECOND_CHANCE}
-    enum ResidentSetSizeSetting {FIXED, VARIABLE}
-    enum ReplacementScopeSetting {GLOBAL, LOCAL}
-    enum CleaningPolicySetting {DEMAND, PRE_CLEANING}
+    public enum FetchPolicySetting {DEMAND, PRE_PAGING}
+    public enum PlacementPolicySetting {FIRST_AVAILABLE, NEXT_AVAILABLE}
+    public enum ReplacementPolicySetting {LRU, FIFO, LFU, MRU,SECOND_CHANCE}
+    public enum ResidentSetSizeSetting {FIXED, VARIABLE}
+    public enum ReplacementScopeSetting {GLOBAL, LOCAL}
+    public enum CleaningPolicySetting {DEMAND, PRE_CLEANING}
     
     /***/
-    FetchPolicySetting fetchPolicy;
+    public FetchPolicySetting fetchPolicy;
     /***/
-    PlacementPolicySetting placementPolicy;
+    public PlacementPolicySetting placementPolicy;
     /***/
-    ReplacementPolicySetting replacementPolicy;
+    public ReplacementPolicySetting replacementPolicy;
     /***/
-    ResidentSetSizeSetting residentSetSize;
+    public ResidentSetSizeSetting residentSetSize;
     /***/
-    ReplacementScopeSetting replacementScope;
+    public ReplacementScopeSetting replacementScope;
     /***/
-    CleaningPolicySetting cleaningPolicy; 
+    public CleaningPolicySetting cleaningPolicy; 
     /** Amount in processes that can be in main memory at the same time. */
-    int loadControl;
+    public int loadControl;
     /** How many addresses can be referenced in a page */
-    int pageSize;
+    public int pageSize;
     /** Amount of frames in main memory */
-    int primaryMemoryFrames;
+    public int primaryMemoryFrames;
     /** Amount of pages that can exist in total */
-    int secondaryMemoryPages;
+    public int secondaryMemoryPages;
 
     public GlobalConfig(
             FetchPolicySetting fetchPolicy, 

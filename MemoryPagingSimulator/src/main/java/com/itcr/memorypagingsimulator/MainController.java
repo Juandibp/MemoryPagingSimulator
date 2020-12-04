@@ -53,6 +53,7 @@ public class MainController {
     
     public void startUI(){
         this.mainWindow.setVisible(true);
+        this.openConfig();
     }
     
     public void openConfig(){
