@@ -9,11 +9,12 @@ package com.itcr.memorypagingsimulator.algorithms.models;
  *
  * @author juand
  */
-class Page {
+public class Page {
     
     private int id;
     private int basePointer;
     private int size;
+    private int referenceCounter = 0;
     private boolean isAllocated = false;
 
     public Page(int id, int basePointer, int size) {
@@ -58,5 +59,6 @@ class Page {
     public void setSize(int size) {
         this.size = size;
     }
-        
+    
+    public void reference(){ this.referenceCounter+=1; }
 }

@@ -13,7 +13,7 @@ import java.util.LinkedList;
  *
  * @author juand
  */
-public class SecondChancePageReplacement1 extends AbstractPageReplacement{
+public class SecondChancePageReplacement extends AbstractPageReplacement{
     	
     @Override
     protected void allocate() {

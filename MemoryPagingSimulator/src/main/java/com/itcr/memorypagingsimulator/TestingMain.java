@@ -18,6 +18,7 @@ public class TestingMain {
     GlobalConfig conf = new GlobalConfig();
     ArrayList<Process> processes = new ArrayList<>();
     ReplacementPolicy repPolicy;
+    AlgorithmController algController; 
     
     public static void main(String[] args){
         new TestingMain().execTest();
@@ -30,6 +31,7 @@ public class TestingMain {
         this.processes.add(new Process(2, 15, 5));
         this.processes.add(new Process(3, 3, 0));
         this.processes.add(new Process(4, 7, 3));
+        this.algController = new AlgorithmController(this.processes, conf);
         this.repPolicy.setParams(new int[] {5,3,4,8,4,2}, 10);
     }
 }
