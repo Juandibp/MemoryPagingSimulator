@@ -48,6 +48,17 @@ public class AlgorithmController {
         //  returns nothing, always does its job
     }
     
+    public void addProcess(Process process) throws InsuficientMemoryException {
+        int pageCount = 0;
+        for(Process p : this.processes){
+            pageCount += p.getPagesRequired();
+        }
+        pageCount += process.getPagesRequired();
+        if(pageCount > conf.secondaryMemoryPages){
+            throw new InsuficientMemoryException("No hay suficiente memoria para este proceso");
+        }
+    }
+    
     //setting up stuff all the way down
     
     public void setConfig() {
@@ -130,4 +141,10 @@ public class AlgorithmController {
         }
     }
          
+    //exceptions
+    public class InsuficientMemoryException extends Exception {
+        public InsuficientMemoryException(String message){
+            super(message);
+        }
+    }
 }

@@ -6,6 +6,8 @@
 package com.itcr.memorypagingsimulator;
 
 import com.itcr.memorypagingsimulator.algorithms.*;
+import com.itcr.memorypagingsimulator.algorithms.models.Frames;
+import com.itcr.memorypagingsimulator.algorithms.models.Pages;
 import java.util.ArrayList;
 import com.itcr.memorypagingsimulator.algorithms.models.Process;
 
@@ -21,10 +23,10 @@ public class TestingMain {
     AlgorithmController algController; 
     
     public static void main(String[] args){
-        new TestingMain().execTest();
+        new TestingMain().execTest(args);
     }
     
-    public void execTest(){
+    public void execTest(String[] args){
         this.repPolicy = new FIFOPageReplacement();
         this.processes.add(new Process(0, 20, 2));
         this.processes.add(new Process(1, 10, 2));
@@ -32,6 +34,19 @@ public class TestingMain {
         this.processes.add(new Process(3, 3, 0));
         this.processes.add(new Process(4, 7, 3));
         this.algController = new AlgorithmController(this.processes, conf);
-        this.repPolicy.setParams(new int[] {5,3,4,8,4,2}, 10);
+        if(args[0] != null)
+            if(args[0].equals("gTest"))
+                runGtest();
+    }
+    
+    public void runGtest(){
+        ArrayList<Process> processes = new ArrayList<>();
+        Frames frames = new Frames(10);
+        Pages pages = new Pages(50);
+        processes.add(new Process(0, 20, 2));
+        processes.add(new Process(1, 10, 2));
+        processes.add(new Process(2, 15, 5));
+        processes.add(new Process(3, 3, 0));
+        processes.add(new Process(4, 7, 3));
     }
 }
