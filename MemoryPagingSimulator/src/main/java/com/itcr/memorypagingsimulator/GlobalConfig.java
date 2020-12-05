@@ -27,6 +27,10 @@ public class GlobalConfig {
     /***/
     public ResidentSetSizeSetting residentSetSize;
     /***/
+    public int varResSetSizeLowerLimit;
+    /***/
+    public int varResSetSizeUpperLimit;
+    /***/
     public ReplacementScopeSetting replacementScope;
     /***/
     public CleaningPolicySetting cleaningPolicy; 
@@ -42,10 +46,12 @@ public class GlobalConfig {
     public GlobalConfig(
             FetchPolicySetting fetchPolicy, 
             PlacementPolicySetting placementPolicy, 
-            ReplacementPolicySetting replacementPolicy,
+            ReplacementPolicySetting replacementPolicy, 
             ResidentSetSizeSetting residentSetSize, 
-            ReplacementScopeSetting replacementScope,
-            CleaningPolicySetting cleaningPolicy,
+            int varResSetSizeLowerLimit, 
+            int varResSetSizeUpperLimit, 
+            ReplacementScopeSetting replacementScope, 
+            CleaningPolicySetting cleaningPolicy, 
             int loadControl, 
             int pageSize, 
             int primaryMemoryFrames, 
@@ -54,6 +60,8 @@ public class GlobalConfig {
         this.placementPolicy = placementPolicy;
         this.replacementPolicy = replacementPolicy;
         this.residentSetSize = residentSetSize;
+        this.varResSetSizeLowerLimit = varResSetSizeLowerLimit;
+        this.varResSetSizeUpperLimit = varResSetSizeUpperLimit;
         this.replacementScope = replacementScope;
         this.cleaningPolicy = cleaningPolicy;
         this.loadControl = loadControl;
@@ -62,6 +70,7 @@ public class GlobalConfig {
         this.secondaryMemoryPages = secondaryMemoryPages;
     }
 
+
     
     public GlobalConfig() {
         this(
@@ -69,6 +78,8 @@ public class GlobalConfig {
                 PlacementPolicySetting.FIRST_AVAILABLE,
                 ReplacementPolicySetting.FIFO,
                 ResidentSetSizeSetting.FIXED,
+                3,
+                20,
                 ReplacementScopeSetting.GLOBAL,
                 CleaningPolicySetting.DEMAND,
                 5,
@@ -84,6 +95,8 @@ public class GlobalConfig {
             this.placementPolicy,
             this.replacementPolicy,
             this.residentSetSize ,
+            this.varResSetSizeLowerLimit,
+            this.varResSetSizeUpperLimit,
             this.replacementScope,
             this.cleaningPolicy,
             this.loadControl,
@@ -98,6 +111,8 @@ public class GlobalConfig {
         this.placementPolicy = c.placementPolicy;
         this.replacementPolicy = c.replacementPolicy;
         this.residentSetSize = c.residentSetSize;
+        this.varResSetSizeLowerLimit = c.varResSetSizeLowerLimit;
+        this.varResSetSizeUpperLimit = c.varResSetSizeUpperLimit;
         this.replacementScope = c.replacementScope;
         this.cleaningPolicy = c.cleaningPolicy;
         this.loadControl = c.loadControl;

@@ -56,11 +56,13 @@ public class TestingMain {
             testAlg.addProcess(new Process(4, 7, 3));           
             System.out.println("Config: " + this.conf);
             System.out.println("Page: " + testProcess.getPageTable());
-            ArrayList<Page> fetchedPages = new DemandFetchPolicy().fetch(testAlg.pages, testAlg.frames, testProcess, 32);
+            ArrayList<Page> fetchedPages = new DemandFetchPolicy().fetch(testAlg.pages, testAlg.frames, testProcess, 0);
             System.out.println("Fetched the pages "+fetchedPages);
         } catch (AlgorithmController.InsuficientMemoryException ex) {
             ex.printStackTrace();
         } catch (FetchPolicy.IllegalReferenceException ex) {
+            ex.printStackTrace();
+        } catch (AlgorithmController.LoadControlExcededException ex) {
             ex.printStackTrace();
         }
     }
