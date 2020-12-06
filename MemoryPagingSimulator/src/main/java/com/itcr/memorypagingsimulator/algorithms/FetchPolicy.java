@@ -4,6 +4,7 @@
  * and open the template in the editor.
  */
 package com.itcr.memorypagingsimulator.algorithms;
+import com.itcr.memorypagingsimulator.GlobalConfig;
 import com.itcr.memorypagingsimulator.algorithms.models.Frames;
 import com.itcr.memorypagingsimulator.algorithms.models.Page;
 import com.itcr.memorypagingsimulator.algorithms.models.Pages;
@@ -17,7 +18,7 @@ import java.util.ArrayList;
 public abstract class FetchPolicy {
     
     public abstract ArrayList<Page> fetch(
-            Pages pages, Frames frames, Process process, int pageId) throws IllegalReferenceException;
+            Pages pages, Frames frames, Process process, int pageId, GlobalConfig conf) throws IllegalReferenceException;
     
     public int getGlobalPageId(Process process, int id) throws IllegalReferenceException {
         if(id >= process.getPageTable().size()) throw new IllegalReferenceException();

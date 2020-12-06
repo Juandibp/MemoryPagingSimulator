@@ -57,7 +57,10 @@ public class TestingMain {
             testAlg.allocatePages();
             System.out.println("Config: " + this.conf);
             System.out.println("Page: " + testProcess.getPageTable());
-            ArrayList<Page> fetchedPages = new DemandFetchPolicy().fetch(testAlg.pages, testAlg.frames, testProcess, 0);
+            ArrayList<Page> fetchedPages = new DemandFetchPolicy().fetch(testAlg.pages, testAlg.frames, testProcess, 0, conf);
+            System.out.println("Fetched the pages "+fetchedPages);
+            testProcess.getPageTable().get(5).setIsAllocated(true);
+            fetchedPages = new PreFetchPolicy().fetch(testAlg.pages, testAlg.frames, testProcess, 10, conf);
             System.out.println("Fetched the pages "+fetchedPages);
         } catch (AlgorithmController.InsuficientMemoryException ex) {
             ex.printStackTrace();

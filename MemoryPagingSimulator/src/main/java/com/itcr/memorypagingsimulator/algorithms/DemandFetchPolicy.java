@@ -5,6 +5,7 @@
  */
 package com.itcr.memorypagingsimulator.algorithms;
 
+import com.itcr.memorypagingsimulator.GlobalConfig;
 import com.itcr.memorypagingsimulator.algorithms.models.Frames;
 import com.itcr.memorypagingsimulator.algorithms.models.Page;
 import com.itcr.memorypagingsimulator.algorithms.models.Pages;
@@ -18,7 +19,7 @@ import java.util.ArrayList;
 public class DemandFetchPolicy extends FetchPolicy{
     
     @Override
-    public ArrayList<Page> fetch(Pages pages, Frames frames, Process process, int pageId) throws IllegalReferenceException {
+    public ArrayList<Page> fetch(Pages pages, Frames frames, Process process, int pageId, GlobalConfig conf) throws IllegalReferenceException {
         int globalPageId = this.getGlobalPageId(process, pageId);
         Page page = process.getPageTable().get(pageId);            
         page.reference();
