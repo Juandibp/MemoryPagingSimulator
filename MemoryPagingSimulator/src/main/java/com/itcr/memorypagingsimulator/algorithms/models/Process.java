@@ -15,19 +15,24 @@ public class Process {
     
     private int id;
     private int pagesRequired;
+    private int frameSpace;
+    private int frameSpaceLowerLimit;
     private ArrayList<Page> pageTable;
     private int priority;
     
     //al proceso le toca traducir la direccion... 
     //el proceso maneja internamente ids de pagina segun el indice en su tabla
 
-    public Process(int id, int pagesRequired, int priority) {
+
+    public Process(int id, int pagesRequired, int frameSpace, int frameSpaceLowerLimit, int priority) {
         this.id = id;
-        this.pageTable = new ArrayList<>(pagesRequired);
         this.pagesRequired = pagesRequired;
+        this.frameSpace = frameSpace;
+        this.frameSpaceLowerLimit = frameSpaceLowerLimit;
+        this.pageTable = new ArrayList<>(pagesRequired);
         this.priority = priority;
     }
-
+    
     public int getPriority() {
         return priority;
     }
@@ -59,7 +64,24 @@ public class Process {
     public void setPageTable(ArrayList<Page> pageTable) {
         this.pageTable = pageTable;
     }
+        
+    public int getFrameSpace() {
+        return frameSpace;
+    }
 
+    public void setFrameSpace(int frameSpace) {
+        this.frameSpace = frameSpace;
+    }
+
+    public int getFrameSpaceLowerLimit() {
+        return frameSpaceLowerLimit;
+    }
+
+    public void setFrameSpaceLowerLimit(int frameSpaceLowerLimit) {
+        this.frameSpaceLowerLimit = frameSpaceLowerLimit;
+    }
+
+    
     @Override
     public String toString() {
         return "Process{" + "id=" + id + ", pagesRequired=" + pagesRequired + ", pageTable=" + pageTable + ", priority=" + priority + '}';

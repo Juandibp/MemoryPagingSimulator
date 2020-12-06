@@ -31,11 +31,11 @@ public class TestingMain {
     
     public void execTest(String[] args){
         this.repPolicy = new FIFOPageReplacement();
-        this.processes.add(new Process(0, 20, 2));
-        this.processes.add(new Process(1, 10, 2));
-        this.processes.add(new Process(2, 15, 5));
-        this.processes.add(new Process(3, 3, 0));
-        this.processes.add(new Process(4, 7, 3));
+        this.processes.add(new Process(0, 20, conf.varResSetSizeUpperLimit, conf.varResSetSizeLowerLimit, 3));
+        this.processes.add(new Process(1, 10, conf.varResSetSizeUpperLimit, conf.varResSetSizeLowerLimit, 2));
+        this.processes.add(new Process(2, 15, conf.varResSetSizeUpperLimit, conf.varResSetSizeLowerLimit, 5));
+        this.processes.add(new Process(3, 3, conf.varResSetSizeUpperLimit, conf.varResSetSizeLowerLimit, 0));
+        this.processes.add(new Process(4, 7, conf.varResSetSizeUpperLimit, conf.varResSetSizeLowerLimit, 3));
         this.algController = new AlgorithmController(this.processes, conf);
         if(args.length != 0)
             if(args[0].equals("gTest"))
@@ -48,12 +48,13 @@ public class TestingMain {
             Frames frames = new Frames(10);
             Pages pages = new Pages(50);
             AlgorithmController testAlg = new AlgorithmController(processes, this.conf);
-            Process testProcess = new Process(2, 15, 5);
-            testAlg.addProcess(new Process(0, 20, 2));
-            testAlg.addProcess(new Process(1, 10, 2));
+            Process testProcess = new Process(2, 15, conf.varResSetSizeUpperLimit, conf.varResSetSizeLowerLimit, 5);
+            testAlg.addProcess(new Process(0, 20, conf.varResSetSizeUpperLimit, conf.varResSetSizeLowerLimit, 2));
+            testAlg.addProcess(new Process(1, 10, conf.varResSetSizeUpperLimit, conf.varResSetSizeLowerLimit, 2));
             testAlg.addProcess(testProcess);
-            testAlg.addProcess(new Process(3, 3, 0));
-            testAlg.addProcess(new Process(4, 7, 3));           
+            testAlg.addProcess(new Process(3, 3, conf.varResSetSizeUpperLimit, conf.varResSetSizeLowerLimit, 0));
+            testAlg.addProcess(new Process(4, 7, conf.varResSetSizeUpperLimit, conf.varResSetSizeLowerLimit, 3));           
+            testAlg.allocatePages();
             System.out.println("Config: " + this.conf);
             System.out.println("Page: " + testProcess.getPageTable());
             ArrayList<Page> fetchedPages = new DemandFetchPolicy().fetch(testAlg.pages, testAlg.frames, testProcess, 0);

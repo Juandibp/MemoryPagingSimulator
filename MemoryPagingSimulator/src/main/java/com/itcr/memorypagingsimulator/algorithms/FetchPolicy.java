@@ -19,5 +19,10 @@ public abstract class FetchPolicy {
     public abstract ArrayList<Page> fetch(
             Pages pages, Frames frames, Process process, int pageId) throws IllegalReferenceException;
     
+    public int getGlobalPageId(Process process, int id) throws IllegalReferenceException {
+        if(id >= process.getPageTable().size()) throw new IllegalReferenceException();
+        return process.getPageTable().get(id).getId();
+    }
+    
     public class IllegalReferenceException extends Exception {}
 }

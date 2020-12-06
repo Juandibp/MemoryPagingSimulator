@@ -278,18 +278,18 @@ public class ConfigDialog extends javax.swing.JDialog {
 
     private void saveConfigButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveConfigButtonActionPerformed
         try{
-            this.conf.setConfig(new GlobalConfig(
-                    GlobalConfig.FetchPolicySetting.valueOf(this.fetchPolicyComboBox.getSelectedItem().toString()), 
-                    GlobalConfig.PlacementPolicySetting.valueOf(this.placementPolicyComboBox.getSelectedItem().toString()), 
-                    GlobalConfig.ReplacementPolicySetting.valueOf(this.replacementPolicyComboBox.getSelectedItem().toString()), 
-                    GlobalConfig.ResidentSetSizeSetting.valueOf(this.residentSetSizeComboBox.getSelectedItem().toString()), 
-                    GlobalConfig.ReplacementScopeSetting.valueOf(this.replacementScopeComboBox.getSelectedItem().toString()), 
-                    GlobalConfig.CleaningPolicySetting.valueOf(this.cleaningPolicyComboBox.getSelectedItem().toString()), 
-                    Integer.parseInt(this.loadControlSpiner.getValue().toString()), 
-                    Integer.parseInt(this.pageSizeSpinner.getValue().toString()), 
-                    Integer.parseInt(this.physicalMemorySpinner.getValue().toString()), 
-                    Integer.parseInt(this.virtualMemorySpinner.getValue().toString())
-            ));
+//            this.conf.setConfig(new GlobalConfig(
+//                    GlobalConfig.FetchPolicySetting.valueOf(this.fetchPolicyComboBox.getSelectedItem().toString()), 
+//                    GlobalConfig.PlacementPolicySetting.valueOf(this.placementPolicyComboBox.getSelectedItem().toString()), 
+//                    GlobalConfig.ReplacementPolicySetting.valueOf(this.replacementPolicyComboBox.getSelectedItem().toString()), 
+//                    GlobalConfig.ResidentSetSizeSetting.valueOf(this.residentSetSizeComboBox.getSelectedItem().toString()), 
+//                    GlobalConfig.ReplacementScopeSetting.valueOf(this.replacementScopeComboBox.getSelectedItem().toString()), 
+//                    GlobalConfig.CleaningPolicySetting.valueOf(this.cleaningPolicyComboBox.getSelectedItem().toString()), 
+//                    Integer.parseInt(this.loadControlSpiner.getValue().toString()), 
+//                    Integer.parseInt(this.pageSizeSpinner.getValue().toString()), 
+//                    Integer.parseInt(this.physicalMemorySpinner.getValue().toString()), 
+//                    Integer.parseInt(this.virtualMemorySpinner.getValue().toString())
+//            ));
             this.setVisible(false);
         } catch (Exception e) {
             e.printStackTrace();
