@@ -17,7 +17,7 @@ public class Process {
     private int pagesRequired;
     private int frameSpace;
     private int frameSpaceLowerLimit;
-    private ArrayList<Page> pageTable;
+    private ArrayList<Integer> pageTable;
     private int priority;
     
     //al proceso le toca traducir la direccion... 
@@ -57,11 +57,15 @@ public class Process {
         this.id = id;
     }
 
-    public ArrayList<Page> getPageTable() {
+    public ArrayList<Integer> getPageTable() {
         return pageTable;
     }
+    
+    public void allocatePage(int localPageId, int mainMemoryLocation){
+        this.pageTable.set(localPageId, mainMemoryLocation);
+    }
 
-    public void setPageTable(ArrayList<Page> pageTable) {
+    public void setPageTable(ArrayList<Integer> pageTable) {
         this.pageTable = pageTable;
     }
         

@@ -60,5 +60,12 @@ public class Page {
         this.size = size;
     }
     
+    public Page clonePage() {
+        Page retVal = new Page(this.id, this.basePointer, this.size);
+        retVal.setIsAllocated(this.isAllocated);
+        retVal.referenceCounter = this.referenceCounter;
+        return retVal;
+    }
+    
     public void reference(){ this.referenceCounter+=1; }
 }

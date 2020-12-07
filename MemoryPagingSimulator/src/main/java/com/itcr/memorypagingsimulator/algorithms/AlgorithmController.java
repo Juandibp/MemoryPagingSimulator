@@ -63,7 +63,7 @@ public class AlgorithmController {
                 //  the returned pages must be asigned to pagesToClean
                 pagesToClean = this.replacementPolicy.replace(conf, pagesForReplace, frames);
             }
-        }        
+        }
         //cleaning policy, gets always called with pagesToClean
         //  and frames
         this.cleaningPolicy.clean(pagesToClean, frames, pages);
