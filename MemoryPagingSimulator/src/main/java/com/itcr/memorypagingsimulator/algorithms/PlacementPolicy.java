@@ -8,6 +8,7 @@ package com.itcr.memorypagingsimulator.algorithms;
 import com.itcr.memorypagingsimulator.GlobalConfig;
 import com.itcr.memorypagingsimulator.algorithms.models.Frames;
 import com.itcr.memorypagingsimulator.algorithms.models.Page;
+import com.itcr.memorypagingsimulator.algorithms.models.Process;
 import java.util.ArrayList;
 
 /**
@@ -16,5 +17,5 @@ import java.util.ArrayList;
  */
 public abstract class PlacementPolicy {
     
-    public abstract ArrayList<Page> place(ArrayList<Page> pages, Frames frames, GlobalConfig conf);
+    public abstract ArrayList<Page> place(ArrayList<Page> pages, Frames frames, GlobalConfig conf, Process proc);
 }

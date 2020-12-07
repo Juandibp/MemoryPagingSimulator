@@ -92,6 +92,15 @@ public class Process {
     public void setFrameSpaceLowerLimit(int frameSpaceLowerLimit) {
         this.frameSpaceLowerLimit = frameSpaceLowerLimit;
     }
+    
+    public void allocatePage(Page tempPage, int mainMemoryLoc){
+        for(int j=0;j < this.getPageList().size();j++){
+            if(this.getPageList().get(j).getId()== tempPage.getId()){
+                this.allocatePage(j, mainMemoryLoc);
+                }
+            }
+                    
+    }
 
     
     @Override
