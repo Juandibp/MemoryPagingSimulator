@@ -20,15 +20,17 @@ public class DemandFetchPolicy extends FetchPolicy{
     
     @Override
     public ArrayList<Page> fetch(Pages pages, Frames frames, Process process, int pageId, GlobalConfig conf) throws IllegalReferenceException {
-        int globalPageId = this.getGlobalPageId(process, pageId);
-        Page page = process.getPageList().get(pageId);            
-        page.reference();
-        if(page.isIsAllocated()){
+        if(process.getPageTable().get(pageId) != null){
+            //then its in a frame
+            frames.getFrames().get(process.getPageTable().get(pageId)).reference();
             return null;
+        } else {
+            ArrayList<Page> retVal = new ArrayList<>();
+            Page fetchedPage = process.getPageList().get(pageId).clonePage();
+            fetchedPage.reference();
+            retVal.add(fetchedPage);
+            return retVal;
         }
-        ArrayList<Page> retVal = new ArrayList<>();
-        retVal.add(page);
-        return retVal;
     }    
 
 }
