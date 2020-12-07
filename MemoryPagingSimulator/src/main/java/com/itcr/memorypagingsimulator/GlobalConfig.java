@@ -123,6 +123,6 @@ public class GlobalConfig {
 
     @Override
     public String toString() {
-        return "GlobalConfig{" + "fetchPolicy=" + fetchPolicy + ", placementPolicy=" + placementPolicy + ", replacementPolicy=" + replacementPolicy + ", residentSetSize=" + residentSetSize + ", replacementScope=" + replacementScope + ", cleaningPolicy=" + cleaningPolicy + ", loadControl=" + loadControl + ", pageSize=" + pageSize + ", primaryMemoryFrames=" + primaryMemoryFrames + ", secondaryMemoryPages=" + secondaryMemoryPages + '}';
+        return "GlobalConfig{" + "fetchPolicy=" + fetchPolicy + ", placementPolicy=" + placementPolicy + ", replacementPolicy=" + replacementPolicy + ", residentSetSize=" + residentSetSize + ", varResSetSizeLowerLimit=" + varResSetSizeLowerLimit + ", varResSetSizeUpperLimit=" + varResSetSizeUpperLimit + ", replacementScope=" + replacementScope + ", cleaningPolicy=" + cleaningPolicy + ", loadControl=" + loadControl + ", pageSize=" + pageSize + ", primaryMemoryFrames=" + primaryMemoryFrames + ", secondaryMemoryPages=" + secondaryMemoryPages + '}';
     }
 }
