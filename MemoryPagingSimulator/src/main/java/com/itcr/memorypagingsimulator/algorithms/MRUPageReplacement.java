@@ -33,10 +33,10 @@ public class MRUPageReplacement extends ReplacementPolicy{
             if(!f.contains(ref)){
                 faults++;
                 if(f.thereIsAnEmptyFrame()){
-                    f.set(f.getEmptyFrame(), ref);
+                    //f.set(f.getEmptyFrame(), ref);
                 }else{
                     int victim = queue.removeLast();
-                    f.swap(victim, ref);
+                    //f.swap(victim, ref);
                 }
             }
 
