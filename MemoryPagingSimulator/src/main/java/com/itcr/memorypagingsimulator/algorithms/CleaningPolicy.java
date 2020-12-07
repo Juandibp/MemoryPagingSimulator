@@ -5,11 +5,16 @@
  */
 package com.itcr.memorypagingsimulator.algorithms;
 
+import com.itcr.memorypagingsimulator.algorithms.models.Frames;
+import com.itcr.memorypagingsimulator.algorithms.models.Page;
+import com.itcr.memorypagingsimulator.algorithms.models.Pages;
+import java.util.ArrayList;
+
 /**
  *
  * @author lopez
  */
 public abstract class CleaningPolicy {
-    //preguntar pre cleaning
-    public abstract void clean();
+ 
+    public abstract void clean(ArrayList<Page> replacementPages, Frames frames, Pages pages);
 }

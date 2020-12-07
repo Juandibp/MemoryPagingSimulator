@@ -20,8 +20,10 @@ public class AlgorithmController {
     
     public Pages pages;
     public Frames frames;
-    public ReplacementPolicy replacementPolicy;
     public FetchPolicy fetchPolicy;
+    public PlacementPolicy placementpolicy;
+    public ReplacementPolicy replacementPolicy;
+    public CleaningPolicy cleaningPolicy;
     public ArrayList<Process> processes;
     public GlobalConfig conf;
     int pageIdCount = 0;
@@ -34,20 +36,37 @@ public class AlgorithmController {
     }
     
     
-    public void reference(int processId, int pageReferenced){
-
+    public void reference(int processId, int pageReferenced) throws InvalidProcessIdException, FetchPolicy.IllegalReferenceException{
+        ArrayList<Page> pagesToClean = null;
+        
         //fetch the page/pages with corresponding policy
         //  fetch should check if said page can be broud by this process
         //  fetch should check first if pages already in memory
+        //  its worth noting that the fetched pages are not the same objects as
+        //  the pages in secondary memory, but are cloned objects from those
+        ArrayList<Page> fetchedPages = this.fetchPolicy.fetch(
+                pages, frames, this.processes.stream()
+                    .filter(p -> p.getId() == processId).findAny()
+                    .orElseThrow(() -> new InvalidProcessIdException("No existe el proceso: "+processId)), 
+                pageReferenced, conf);
+        if(fetchedPages != null && !fetchedPages.isEmpty()){
         //  if pages where brought then page fault ocurred
         //  therefore call placement policy
-        //placementPolicy should return List<Page> or null,
-        //  if returned null empty the returned processes 
-        //  should replace others
-        //replacementPolicy has to receive as parameters
-        //  the pages to place, replacement scope, resident set size
-        //  and cleaning policy as well (might not be called)
-        //  returns nothing, always does its job
+            pageFaultCount++;
+            ArrayList<Page> pagesForReplace = this.placementpolicy.place(fetchedPages, frames, conf);
+            //placementPolicy should return List<Page> or null,
+            //  if didnt return null/empty the returned processes 
+            //  should replace others
+            if(pagesForReplace != null && !pagesForReplace.isEmpty()){
+                //replacementPolicy has to receive as parameters
+                //  the pages to place, replacement scope, resident set size
+                //  the returned pages must be asigned to pagesToClean
+                pagesToClean = this.replacementPolicy.replace(conf, pagesForReplace, frames);
+            }
+        }        
+        //cleaning policy, gets always called with pagesToClean
+        //  and frames
+        this.cleaningPolicy.clean(pagesToClean, frames, pages);
     }
     
     public void addProcess(Process process) throws InsuficientMemoryException, LoadControlExcededException {
@@ -184,5 +203,9 @@ public class AlgorithmController {
     
     public class LoadControlExcededException extends Exception {
         public LoadControlExcededException(String message){ super(message); }
+    }
+    
+    public class InvalidProcessIdException extends Exception {
+        public InvalidProcessIdException(String message){ super(message); }
     }
 }

@@ -5,15 +5,19 @@
  */
 package com.itcr.memorypagingsimulator.algorithms;
 
+import com.itcr.memorypagingsimulator.GlobalConfig;
 import com.itcr.memorypagingsimulator.algorithms.models.Frames;
+import com.itcr.memorypagingsimulator.algorithms.models.Page;
 import com.itcr.memorypagingsimulator.algorithms.models.Reference;
+import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 
 /**
  *
  * @author juand
  */
-public class LFUPageReplacement extends AbstractPageReplacement{
+public class LFUPageReplacement extends ReplacementPolicy{
     	
     @Override
     protected void allocate() {
@@ -40,5 +44,10 @@ public class LFUPageReplacement extends AbstractPageReplacement{
 
             }
 
+    }
+
+    @Override
+    public ArrayList<Page> replace(GlobalConfig conf, List<Page> pagesToPlace, Frames frames) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

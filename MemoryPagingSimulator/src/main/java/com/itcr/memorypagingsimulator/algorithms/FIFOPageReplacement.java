@@ -5,15 +5,19 @@
  */
 package com.itcr.memorypagingsimulator.algorithms;
 
+import com.itcr.memorypagingsimulator.GlobalConfig;
 import com.itcr.memorypagingsimulator.algorithms.models.Frames;
+import com.itcr.memorypagingsimulator.algorithms.models.Page;
 import com.itcr.memorypagingsimulator.algorithms.models.Reference;
+import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 
 /**
  *
  * @author juand
  */
-public class FIFOPageReplacement extends AbstractPageReplacement {
+public class FIFOPageReplacement extends ReplacementPolicy {
     @Override
     protected void allocate() {
         LinkedList<Integer> queue = new LinkedList<>();
@@ -42,5 +46,9 @@ public class FIFOPageReplacement extends AbstractPageReplacement {
 
     }
 
-    
+    @Override
+    public ArrayList<Page> replace(GlobalConfig conf, List<Page> pagesToPlace, Frames frames) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
 }
