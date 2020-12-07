@@ -15,14 +15,17 @@ import java.util.List;
  *
  * @author juand
  */
-public class FirstAvailablePlacement extends PlacementPolicy{
-
+public class NextAvailablePlacement extends PlacementPolicy{
+    public int lastIndex = 0;
     @Override
     public ArrayList<Page> place(ArrayList<Page> pages, Frames frames, GlobalConfig conf) {
-        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
         List<Page> RAM = frames.getFrames();
-        
-        for(int i = 0; i<RAM.size(); i++){
+        for(int i=lastIndex+1; i != lastIndex; i++){
+            
+            if(i >= RAM.size()){
+                i=0;
+            }
+            
             if(pages != null && pages.size() > 0){    
                 if(RAM.get(i) == null){
                     RAM.set(i, pages.get(0));
@@ -30,7 +33,8 @@ public class FirstAvailablePlacement extends PlacementPolicy{
                 }
             }
             else{
-                return pages;
+                lastIndex = i;
+                break;
             }
         }
         return pages;
