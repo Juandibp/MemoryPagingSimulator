@@ -15,21 +15,21 @@ public class Process {
     
     private int id;
     private int pagesRequired;
-    private int frameSpace;
-    private int frameSpaceLowerLimit;
+    private int frameSpace;           //if variable acts as upper limit
+    private int frameSpaceLowerLimit; //if fixed is equivalent to frameSpace
     private ArrayList<Integer> pageTable;
+    private ArrayList<Page> pageList;
     private int priority;
     
-    //al proceso le toca traducir la direccion... 
-    //el proceso maneja internamente ids de pagina segun el indice en su tabla
-
+    //el proceso maneja internamente ids de pagina segun el indice en su lista
 
     public Process(int id, int pagesRequired, int frameSpace, int frameSpaceLowerLimit, int priority) {
         this.id = id;
         this.pagesRequired = pagesRequired;
         this.frameSpace = frameSpace;
         this.frameSpaceLowerLimit = frameSpaceLowerLimit;
-        this.pageTable = new ArrayList<>(pagesRequired);
+        this.pageTable = new ArrayList<>(frameSpaceLowerLimit);
+        this.pageList = new ArrayList<>(pagesRequired);
         this.priority = priority;
     }
     
@@ -65,10 +65,18 @@ public class Process {
         this.pageTable.set(localPageId, mainMemoryLocation);
     }
 
-    public void setPageTable(ArrayList<Integer> pageTable) {
-        this.pageTable = pageTable;
+    public void addPage(Page p, int index){
+        this.pageList.set(index, p);
     }
-        
+
+    public ArrayList<Page> getPageList() {
+        return pageList;
+    }
+
+    public void setPageList(ArrayList<Page> pageList) {
+        this.pageList = pageList;
+    }
+
     public int getFrameSpace() {
         return frameSpace;
     }

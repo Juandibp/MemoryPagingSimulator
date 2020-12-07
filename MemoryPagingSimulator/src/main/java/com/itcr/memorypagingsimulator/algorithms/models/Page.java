@@ -14,6 +14,7 @@ public class Page {
     private int id;
     private int basePointer;
     private int size;
+    private int processId;
     private int referenceCounter = 0;
     private boolean isAllocated = false;
 
@@ -22,7 +23,7 @@ public class Page {
         this.basePointer = basePointer;
         this.size = size;
     }
-
+    
     @Override
     public String toString() {
         return "Page{" + "id=" + id + ", basePointer=" + basePointer + ", size=" + size + '}';
@@ -59,11 +60,27 @@ public class Page {
     public void setSize(int size) {
         this.size = size;
     }
+
+    public int getProcessId() {
+        return processId;
+    }
+
+    public void setProcessId(int processId) {
+        this.processId = processId;
+    }
+
+    public int getReferenceCounter() {
+        return referenceCounter;
+    }
+
+    public void setReferenceCounter(int referenceCounter) {
+        this.referenceCounter = referenceCounter;
+    }
     
     public Page clonePage() {
         Page retVal = new Page(this.id, this.basePointer, this.size);
         retVal.setIsAllocated(this.isAllocated);
-        retVal.referenceCounter = this.referenceCounter;
+        retVal.setReferenceCounter  (this.referenceCounter);
         return retVal;
     }
     

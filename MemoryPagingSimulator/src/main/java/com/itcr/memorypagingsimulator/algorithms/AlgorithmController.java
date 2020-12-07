@@ -106,7 +106,7 @@ public class AlgorithmController {
                 this.pages.addPage(newPage);
                 this.pageIdCount += 1;
             }
-            process.setPageTable(pageTable);
+            process.setPageList(pageTable);
         }
     }
     

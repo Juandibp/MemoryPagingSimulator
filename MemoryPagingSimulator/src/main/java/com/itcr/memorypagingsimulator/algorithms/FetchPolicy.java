@@ -22,7 +22,7 @@ public abstract class FetchPolicy {
     
     public int getGlobalPageId(Process process, int id) throws IllegalReferenceException {
         if(id >= process.getPageTable().size()) throw new IllegalReferenceException();
-        return process.getPageTable().get(id).getId();
+        return process.getPageList().get(id).getId();
     }
     
     public class IllegalReferenceException extends Exception {}

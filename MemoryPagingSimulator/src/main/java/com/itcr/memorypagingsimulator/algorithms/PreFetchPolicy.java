@@ -24,16 +24,17 @@ public class PreFetchPolicy extends FetchPolicy {
         ArrayList<Page> retVal = new ArrayList<>();
         int pageAmount = conf.residentSetSize == GlobalConfig.ResidentSetSizeSetting.FIXED ? process.getFrameSpace() : conf.varResSetSizeLowerLimit ;
         if(pageAmount >= process.getPagesRequired()){
-            process.getPageTable().forEach(localId -> {
-                frames.ge
-                page.reference();
-                retVal.add(page);
+            process.getPageList().forEach(page -> {
+                //TODO esto tenia que cambiarlo
+                Page p = page.clonePage();
+                p.reference();
+                retVal.add(p);
             });
         } else {
             int lower = (pageId+pageAmount) >= process.getPagesRequired() ? pageId : process.getPagesRequired() - pageAmount;
             for(int i = lower; i < lower+pageAmount;i++){
-                retVal.add(process.getPageTable().get(i));
-                process.getPageTable().get(i).reference();                    
+                retVal.add(process.getPageList().get(i));
+                process.getPageList().get(i).reference();                    
             }
         }
         for (int i = 0; i < retVal.size(); i++) {
