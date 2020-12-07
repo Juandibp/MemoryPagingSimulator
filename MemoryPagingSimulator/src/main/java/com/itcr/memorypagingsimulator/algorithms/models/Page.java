@@ -14,7 +14,6 @@ public class Page {
     private int id;
     private int basePointer;
     private int size;
-    private int processId;
     private int referenceCounter = 0;
     private boolean isAllocated = false;
 
@@ -59,14 +58,6 @@ public class Page {
 
     public void setSize(int size) {
         this.size = size;
-    }
-
-    public int getProcessId() {
-        return processId;
-    }
-
-    public void setProcessId(int processId) {
-        this.processId = processId;
     }
 
     public int getReferenceCounter() {

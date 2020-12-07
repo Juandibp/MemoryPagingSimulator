@@ -28,7 +28,10 @@ public class Process {
         this.pagesRequired = pagesRequired;
         this.frameSpace = frameSpace;
         this.frameSpaceLowerLimit = frameSpaceLowerLimit;
-        this.pageTable = new ArrayList<>(frameSpaceLowerLimit);
+        this.pageTable = new ArrayList<>();
+        for (int i = 0; i < pagesRequired; i++) {
+            pageTable.add(null);
+        }
         this.pageList = new ArrayList<>(pagesRequired);
         this.priority = priority;
     }
@@ -102,10 +105,9 @@ public class Process {
                     
     }
 
-    
     @Override
     public String toString() {
-        return "Process{" + "id=" + id + ", pagesRequired=" + pagesRequired + ", pageTable=" + pageTable + ", priority=" + priority + '}';
+        return "Process{" + "id=" + id + ", pagesRequired=" + pagesRequired + ", frameSpace=" + frameSpace + ", frameSpaceLowerLimit=" + frameSpaceLowerLimit + ", pageTable=" + pageTable + ", pageList=" + pageList + ", priority=" + priority + '}';
     }
     
 }

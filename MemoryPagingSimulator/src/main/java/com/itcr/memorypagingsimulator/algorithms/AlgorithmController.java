@@ -72,7 +72,7 @@ public class AlgorithmController {
     public void addProcess(Process process) throws InsuficientMemoryException, LoadControlExcededException {
         boolean loadControlExceded = false;
         Process removedProcess = null;
-        if(processes.size() > conf.loadControl){
+        if(processes.size() >= conf.loadControl){
             loadControlExceded = true;
             if(process.getPriority() <= processes.get(0).getPriority()){         //processes of same priority follow find it keep it
                 throw new LoadControlExcededException("Se superó el nivel de multiprogramación. Algunos procesos no serán admitidos.");
@@ -99,14 +99,14 @@ public class AlgorithmController {
     
     public void allocatePages() {
         for(Process process: processes){
-            ArrayList<Page> pageTable = new ArrayList<>();
+            ArrayList<Page> pageList = new ArrayList<>();
             for(int i = 0; i<process.getPagesRequired() ; i++ ){
                 Page newPage = new Page(this.pageIdCount, this.pageIdCount * this.conf.pageSize, this.conf.pageSize);
-                pageTable.add(newPage);
+                pageList.add(newPage);
                 this.pages.addPage(newPage);
                 this.pageIdCount += 1;
             }
-            process.setPageList(pageTable);
+            process.setPageList(pageList);
         }
     }
     
