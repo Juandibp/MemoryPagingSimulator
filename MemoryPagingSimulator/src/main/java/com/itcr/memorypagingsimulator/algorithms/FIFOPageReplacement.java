@@ -32,11 +32,11 @@ public class FIFOPageReplacement extends ReplacementPolicy {
                 queue.addLast(ref);
                 if(f.thereIsAnEmptyFrame()){
                     System.out.println("empty");
-                    f.set(f.getEmptyFrame(), ref);
+                    //f.set(f.getEmptyFrame(), ref);
                 }else{
                     System.out.println("victim");
                     int victim = queue.removeFirst();
-                    f.swap(victim, ref);
+                    //f.swap(victim, ref);
                 }
             }
 
