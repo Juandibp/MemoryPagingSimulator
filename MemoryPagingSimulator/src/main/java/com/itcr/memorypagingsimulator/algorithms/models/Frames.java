@@ -46,19 +46,7 @@ public class Frames implements Iterable<Page>{
     public int indexOf(int reference) {
         return frames.indexOf(reference);
     }
-    /*
-    public int set(int index, Page reference) {
-        return frames.set(index, reference);
-    }
-
-    public void swap(int victim, int reference) {
-        set(indexOf(victim), reference);
-    }*/
-
-    /*public int get(int index) {
-        return frames.get(index);
-    }
-*/
+    
     public boolean thereIsAnEmptyFrame() {
         return contains(-1);
     }
@@ -86,6 +74,10 @@ public class Frames implements Iterable<Page>{
     public void reference(int pageId){
         this.referenceTimes.set(pageId, Pair.with(pageId, timer));
         timer++;
+    }
+
+    public List<Pair<Integer, Integer>> getReferenceTimes() {
+        return referenceTimes;
     }
 
     @Override
