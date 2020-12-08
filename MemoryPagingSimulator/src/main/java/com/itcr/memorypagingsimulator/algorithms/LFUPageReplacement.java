@@ -48,14 +48,7 @@ public class LFUPageReplacement extends ReplacementPolicy{
 
     }
 
-    public int findIndex(Page victim, Frames frames){
-        for (int i=0; i<frames.getFrames().size();i++){
-            if(frames.getFrames().get(i).equals(victim)){
-                return i;
-            }
-        }
-        return 0;
-    }
+   
     
     @Override
     public ArrayList<Page> replace(GlobalConfig conf, List<Page> pagesToPlace, Frames frames, Process proc) {

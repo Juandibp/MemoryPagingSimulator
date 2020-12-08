@@ -59,5 +59,14 @@ public abstract class ReplacementPolicy {
         allocate();
         return references;
     }
+    
+    public int findIndex(Page victim, Frames frames){
+        for (int i=0; i<frames.getFrames().size();i++){
+            if(frames.getFrames().get(i).equals(victim)){
+                return i;
+            }
+        }
+        return 0;
+    }
 
 }
