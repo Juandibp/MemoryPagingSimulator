@@ -8,6 +8,7 @@ package com.itcr.memorypagingsimulator.algorithms.models;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import org.javatuples.Pair;
 
 /**
  * Represents main memory
@@ -18,11 +19,16 @@ public class Frames implements Iterable<Page>{
     
     /** Los numeros son los ids de las paginas */
     private List<Page> frames;
+    private List<Pair<Integer, Integer>> referenceTimes;
+    private int timer = 0;
     
     public Frames(int numberOfFrames) {
         this.frames = new ArrayList<>(numberOfFrames);
+        this.referenceTimes = new ArrayList<>(numberOfFrames);
+        
         for (int i = 0; i < numberOfFrames; i++) {
-                frames.add(null);
+            frames.add(null);
+            referenceTimes.add(null);
         }
     }
     
@@ -64,6 +70,22 @@ public class Frames implements Iterable<Page>{
 
     public int getEmptyFrame() {
         return indexOf(-1);
+    }
+    
+    public void placePage(Page p, int index){
+        this.frames.set(index, p);
+        this.referenceTimes.set(index, Pair.with(index, timer));
+        timer++;
+    }
+    
+    public void reference(Page p){
+        this.referenceTimes.set(p.getId(), Pair.with(p.getId(), timer));
+        timer++;
+    }
+
+    public void reference(int pageId){
+        this.referenceTimes.set(pageId, Pair.with(pageId, timer));
+        timer++;
     }
 
     @Override
