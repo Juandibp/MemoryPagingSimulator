@@ -58,24 +58,30 @@ public class LFUPageReplacement extends ReplacementPolicy{
     }
     
     @Override
-    public ArrayList<Page> replace(GlobalConfig conf, List<Page> pagesToPlace, Frames frames) {
+    public ArrayList<Page> replace(GlobalConfig conf, List<Page> pagesToPlace, Frames frames, Process proc) {
         ArrayList<Page> victims = new ArrayList<>();
+        List<Page> listVictims = new ArrayList<>();
         if(conf.replacementScope == GlobalConfig.ReplacementScopeSetting.GLOBAL){
-            List<Page> listVictims = frames.getFrames()
+            listVictims = frames.getFrames()
                     .stream()
                     .sorted((a,b)-> a.getReferenceCounter() - b.getReferenceCounter())
                     .collect(Collectors.toList());
+        }else{
+            listVictims = frames.getFrames()
+                    .stream()
+                    .filter(var -> proc.getPageList().stream().anyMatch(nombredevariable -> nombredevariable.getId() == var.getId()))
+                    .sorted((a,b)-> a.getReferenceCounter() - b.getReferenceCounter())
+                    .collect(Collectors.toList());
+        }
+
             
-            for(int i = 0; i< pagesToPlace.size(); i++){
-                Page victim = listVictims.get(i);
-                if(!pagesToPlace.contains(victim)){
-                    frames.placePage(pagesToPlace.get(i), i);
-                }
-                frames.getFrames().set(i, victim)
+        for(int i = 0; i< pagesToPlace.size(); i++){
+            Page victim = listVictims.get(i);
+            if(!pagesToPlace.contains(victim)){
+                frames.placePage(pagesToPlace.get(i), findIndex(victim,frames));
+                victims.add(victim);
             }
         }
-        
-        
-        
+        return victims;
     }
 }
