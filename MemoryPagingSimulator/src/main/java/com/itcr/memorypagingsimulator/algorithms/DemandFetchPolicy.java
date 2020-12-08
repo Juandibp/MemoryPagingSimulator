@@ -23,11 +23,13 @@ public class DemandFetchPolicy extends FetchPolicy{
         if(process.getPageTable().get(pageId) != null){
             //then its in a frame
             frames.getFrames().get(process.getPageTable().get(pageId)).reference();
+            frames.reference(process.getPageTable().get(pageId));
             return null;
         } else {
             ArrayList<Page> retVal = new ArrayList<>();
             Page fetchedPage = process.getPageList().get(pageId).clonePage();
             fetchedPage.reference();
+            frames.reference(fetchedPage);
             retVal.add(fetchedPage);
             return retVal;
         }

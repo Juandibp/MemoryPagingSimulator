@@ -23,6 +23,7 @@ public class PreFetchPolicy extends FetchPolicy {
         if(process.getPageTable().get(pageId) != null){
             //no pageFault
             frames.getFrames().get(process.getPageTable().get(pageId)).reference();
+            frames.reference(process.getPageTable().get(pageId));
             return null;
         } else {
             //pageFault
@@ -33,8 +34,10 @@ public class PreFetchPolicy extends FetchPolicy {
                     //bring every page that isnt in main memory
                     if(process.getPageTable().get(i) == null) {
                         Page p = process.getPageList().get(i).clonePage();
-                        if(i == pageId) //this is the page originaly referenced 
+                        if(i == pageId){        //this is the page originaly referenced 
                             p.reference();
+                            frames.reference(p);
+                        } 
                         retVal.add(p);
                     }
                 }
@@ -44,8 +47,10 @@ public class PreFetchPolicy extends FetchPolicy {
                     //bring the amount of pages that arent in main memory after the one referenced
                     if(process.getPageTable().get(i) == null) {
                         Page p = process.getPageList().get(i).clonePage();
-                        if(i == pageId) //this is the page originaly referenced 
+                        if(i == pageId){//this is the page originaly referenced 
                             p.reference();
+                            frames.reference(p);
+                        } 
                         retVal.add(p);
                     }
                 }
