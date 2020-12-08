@@ -12,12 +12,15 @@ import com.itcr.memorypagingsimulator.algorithms.models.Reference;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
+import org.javatuples.Pair;
 
 /**
  *
  * @author juand
  */
 public class FIFOPageReplacement extends ReplacementPolicy {
+    
     @Override
     protected void allocate() {
         LinkedList<Integer> queue = new LinkedList<>();
@@ -45,10 +48,37 @@ public class FIFOPageReplacement extends ReplacementPolicy {
         }
 
     }
+    
+    private int currentIndex =0; //to be used in GLOBAL resident set
+    private List<Pair<Integer, Integer>> processIndex = new ArrayList<>();
+                                //to be used in LOCAL residentSet
 
     @Override
-    public ArrayList<Page> replace(GlobalConfig conf, List<Page> pagesToPlace, Frames frames) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public ArrayList<Page> replace(GlobalConfig conf, List<Page> pagesToPlace, Frames frames, com.itcr.memorypagingsimulator.algorithms.models.Process proc) {
+        ArrayList<Page> retValue = new ArrayList<>();
+        if(conf.replacementScope == GlobalConfig.ReplacementScopeSetting.GLOBAL){
+            for(int i = 0 ; i < pagesToPlace.size() ; i++){
+                retValue.add(frames.getFrames().get(currentIndex));
+                frames.placePage(pagesToPlace.get(i), currentIndex);
+                currentIndex++;
+                if(currentIndex == conf.secondaryMemoryPages){
+                    currentIndex = 0;
+                }
+            }
+        } else {
+            List<Page> scope = frames.getFrames().stream()
+                    .filter(f -> proc.getPageList().stream().anyMatch(p -> p.getId() == f.getId()))
+                    .collect(Collectors.toList());
+            for(int i = 0 ; i < pagesToPlace.size() ; i++){
+                retValue.add(scope.get(currentIndex));
+//                frames.placePage(frames.getFrames().stream(), currentIndex);
+                currentIndex++;
+                if(currentIndex == conf.secondaryMemoryPages){
+                    currentIndex = 0;
+                }
+            }
+        }
+        return null;
     }
 
 }
