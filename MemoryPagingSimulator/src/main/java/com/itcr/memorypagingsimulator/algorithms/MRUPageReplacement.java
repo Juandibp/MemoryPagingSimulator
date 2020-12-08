@@ -8,6 +8,7 @@ package com.itcr.memorypagingsimulator.algorithms;
 import com.itcr.memorypagingsimulator.GlobalConfig;
 import com.itcr.memorypagingsimulator.algorithms.models.Frames;
 import com.itcr.memorypagingsimulator.algorithms.models.Page;
+import com.itcr.memorypagingsimulator.algorithms.models.Process;
 import com.itcr.memorypagingsimulator.algorithms.models.Reference;
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -47,7 +48,8 @@ public class MRUPageReplacement extends ReplacementPolicy{
     }
 
     @Override
-    public ArrayList<Page> replace(GlobalConfig conf, List<Page> pagesToPlace, Frames frames) {
+    public ArrayList<Page> replace(GlobalConfig conf, List<Page> pagesToPlace, Frames frames, Process processId) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
+
 }

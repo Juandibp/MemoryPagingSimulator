@@ -8,6 +8,7 @@ package com.itcr.memorypagingsimulator.algorithms;
 import com.itcr.memorypagingsimulator.GlobalConfig;
 import com.itcr.memorypagingsimulator.algorithms.models.Frames;
 import com.itcr.memorypagingsimulator.algorithms.models.Page;
+import com.itcr.memorypagingsimulator.algorithms.models.Process;
 import com.itcr.memorypagingsimulator.algorithms.models.Reference;
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +25,7 @@ public abstract class ReplacementPolicy {
     
     protected abstract void allocate();
     
-    public abstract ArrayList<Page> replace(GlobalConfig conf, List<Page> pagesToPlace, Frames frames);
+    public abstract ArrayList<Page> replace(GlobalConfig conf, List<Page> pagesToPlace, Frames frames, Process processId);
     
     public List<Reference> call() throws Exception{
         return allocateReferences();

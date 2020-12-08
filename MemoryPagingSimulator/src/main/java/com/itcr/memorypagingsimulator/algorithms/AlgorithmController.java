@@ -61,7 +61,7 @@ public class AlgorithmController {
                 //replacementPolicy has to receive as parameters
                 //  the pages to place, replacement scope, resident set size
                 //  the returned pages must be asigned to pagesToClean
-                pagesToClean = this.replacementPolicy.replace(conf, pagesForReplace, frames);
+                pagesToClean = this.replacementPolicy.replace(conf, pagesForReplace, frames, this.processes.get(processId));
             }
         }
         //cleaning policy, gets always called with pagesToClean
