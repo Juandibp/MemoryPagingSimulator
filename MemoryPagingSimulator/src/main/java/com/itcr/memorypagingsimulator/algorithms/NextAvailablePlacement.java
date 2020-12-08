@@ -27,15 +27,15 @@ public class NextAvailablePlacement extends PlacementPolicy{
             }
             
             if(pages != null && pages.size() > 0){    
-                if(RAM.get(i) == null){
-                    RAM.set(i, pages.get(0));
+                if(RAM.get(i-1) == null){
+                    RAM.set(i-1, pages.get(0));
                     Page tempPage = pages.remove(0);
                     
-                    proc.allocatePage(tempPage, i);
+                    proc.allocatePage(tempPage, i-1);
                 }
             }
             else{
-                lastIndex = i;
+                lastIndex = i-1;
                 break;
             }
         }

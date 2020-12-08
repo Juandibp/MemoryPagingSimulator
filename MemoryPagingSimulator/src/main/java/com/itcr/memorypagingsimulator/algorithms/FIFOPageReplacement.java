@@ -9,6 +9,7 @@ import com.itcr.memorypagingsimulator.GlobalConfig;
 import com.itcr.memorypagingsimulator.algorithms.models.Frames;
 import com.itcr.memorypagingsimulator.algorithms.models.Page;
 import com.itcr.memorypagingsimulator.algorithms.models.Reference;
+import com.itcr.memorypagingsimulator.algorithms.models.Process;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -54,7 +55,7 @@ public class FIFOPageReplacement extends ReplacementPolicy {
                                 //to be used in LOCAL residentSet
 
     @Override
-    public ArrayList<Page> replace(GlobalConfig conf, List<Page> pagesToPlace, Frames frames, com.itcr.memorypagingsimulator.algorithms.models.Process proc) {
+    public ArrayList<Page> replace(GlobalConfig conf, List<Page> pagesToPlace, Frames frames, Process proc) {
         ArrayList<Page> retValue = new ArrayList<>();
         if(conf.replacementScope == GlobalConfig.ReplacementScopeSetting.GLOBAL){
             for(int i = 0 ; i < pagesToPlace.size() ; i++){
@@ -69,16 +70,25 @@ public class FIFOPageReplacement extends ReplacementPolicy {
             List<Page> scope = frames.getFrames().stream()
                     .filter(f -> proc.getPageList().stream().anyMatch(p -> p.getId() == f.getId()))
                     .collect(Collectors.toList());
+            Pair<Integer, Integer> pIndex = processIndex.stream()
+                    .filter(elem -> elem.getValue0() == proc.getId())
+                    .findFirst().orElse(Pair.with(proc.getId(), 0));
+            
             for(int i = 0 ; i < pagesToPlace.size() ; i++){
-                retValue.add(scope.get(currentIndex));
-//                frames.placePage(frames.getFrames().stream(), currentIndex);
-                currentIndex++;
-                if(currentIndex == conf.secondaryMemoryPages){
-                    currentIndex = 0;
+                retValue.add(scope.get(pIndex.getValue1()));
+                frames.placePage(
+                        pagesToPlace.get(i), 
+                        this.findIndex(scope.get(pIndex.getValue1()), frames));
+                pIndex.setAt1(pIndex.getValue1()+1);
+                if(pIndex.getValue1() == scope.size()){
+                    pIndex.setAt1(0);
                 }
             }
+            
+            if(!processIndex.contains(pIndex))
+                processIndex.add(pIndex);
         }
-        return null;
+        return retValue;
     }
 
 }
