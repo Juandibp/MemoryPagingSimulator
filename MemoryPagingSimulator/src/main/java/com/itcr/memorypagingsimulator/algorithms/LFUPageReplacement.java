@@ -13,6 +13,7 @@ import com.itcr.memorypagingsimulator.algorithms.models.Reference;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  *
@@ -47,8 +48,34 @@ public class LFUPageReplacement extends ReplacementPolicy{
 
     }
 
+    public int findIndex(Page victim, Frames frames){
+        for (int i=0; i<frames.getFrames().size();i++){
+            if(frames.getFrames().get(i).equals(victim)){
+                return i;
+            }
+        }
+        return 0;
+    }
+    
     @Override
-    public ArrayList<Page> replace(GlobalConfig conf, List<Page> pagesToPlace, Frames frames, Process processId) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public ArrayList<Page> replace(GlobalConfig conf, List<Page> pagesToPlace, Frames frames) {
+        ArrayList<Page> victims = new ArrayList<>();
+        if(conf.replacementScope == GlobalConfig.ReplacementScopeSetting.GLOBAL){
+            List<Page> listVictims = frames.getFrames()
+                    .stream()
+                    .sorted((a,b)-> a.getReferenceCounter() - b.getReferenceCounter())
+                    .collect(Collectors.toList());
+            
+            for(int i = 0; i< pagesToPlace.size(); i++){
+                Page victim = listVictims.get(i);
+                if(!pagesToPlace.contains(victim)){
+                    frames.placePage(pagesToPlace.get(i), i);
+                }
+                frames.getFrames().set(i, victim)
+            }
+        }
+        
+        
+        
     }
 }

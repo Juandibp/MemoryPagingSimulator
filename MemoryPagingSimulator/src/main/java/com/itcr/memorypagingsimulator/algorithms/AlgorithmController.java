@@ -53,7 +53,7 @@ public class AlgorithmController {
         //  if pages where brought then page fault ocurred
         //  therefore call placement policy
             pageFaultCount++;
-            ArrayList<Page> pagesForReplace = this.placementpolicy.place(fetchedPages, frames, conf);
+            ArrayList<Page> pagesForReplace = this.placementpolicy.place(fetchedPages, frames, conf, this.processes.get(processId));
             //placementPolicy should return List<Page> or null,
             //  if didnt return null/empty the returned processes 
             //  should replace others
