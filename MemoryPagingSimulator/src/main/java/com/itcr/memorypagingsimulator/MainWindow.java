@@ -8,6 +8,9 @@ import javax.swing.*;
 import com.formdev.flatlaf.FlatDarculaLaf;
 import com.formdev.flatlaf.FlatDarkLaf;
 import java.awt.Color;
+import java.io.File;
+import java.io.IOException;
+import javax.swing.filechooser.FileSystemView;
 /**
  *
  * @author lopez
@@ -15,12 +18,16 @@ import java.awt.Color;
 public class MainWindow extends javax.swing.JFrame {
 
     public MainController mainController;
+    private ProcessFileChooserDialog processFileChooserDialog;
+    private ReferenceFileChooserDialog referenceFileChooserDialog; 
     /**
      * Creates new form MainWindoew
      */
     public MainWindow(MainController m) {
         initComponents();
         this.mainController = m;
+        this.processFileChooserDialog = new ProcessFileChooserDialog(this, true);
+        this.referenceFileChooserDialog = new ReferenceFileChooserDialog(this, true);
     }
 
     /**
@@ -59,11 +66,6 @@ public class MainWindow extends javax.swing.JFrame {
 
         jMenu1.setMnemonic('F');
         jMenu1.setText("File");
-        jMenu1.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jMenu1MouseClicked(evt);
-            }
-        });
 
         jMenuItem1.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_D, java.awt.event.InputEvent.CTRL_DOWN_MASK));
         jMenuItem1.setMnemonic('L');
@@ -109,20 +111,20 @@ public class MainWindow extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(279, 279, 279)
+                .addGap(208, 208, 208)
                 .addComponent(jButton1)
                 .addGap(33, 33, 33)
                 .addComponent(jButton2)
-                .addContainerGap(305, Short.MAX_VALUE))
+                .addContainerGap(239, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(249, Short.MAX_VALUE)
+                .addContainerGap(210, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton1)
                     .addComponent(jButton2))
-                .addGap(187, 187, 187))
+                .addGap(141, 141, 141))
         );
 
         pack();
@@ -136,17 +138,12 @@ public class MainWindow extends javax.swing.JFrame {
         this.mainController.printConfig();        
     }//GEN-LAST:event_jButton2ActionPerformed
 
-    private void jMenu1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu1MouseClicked
-        System.out.println("com.itcr.memorypagingsimulator.MainWindow.jMenu1MouseClicked()");
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jMenu1MouseClicked
-
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
-        // TODO add your handling code here:
+        this.processFileChooserDialog.setVisible(true);
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
-        // TODO add your handling code here:
+        this.referenceFileChooserDialog.setVisible(true);
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 
     private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed

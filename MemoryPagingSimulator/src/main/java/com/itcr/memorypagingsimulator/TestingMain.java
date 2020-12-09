@@ -48,11 +48,13 @@ public class TestingMain {
             Frames frames = new Frames(10);
             Pages pages = new Pages(50);
             AlgorithmController testAlg = new AlgorithmController(processes, this.conf);
+            this.conf.replacementScope = GlobalConfig.ReplacementScopeSetting.LOCAL;
+            
             testAlg.addProcess(new Process(0, 20, 2, conf.varResSetSizeLowerLimit, 2));
             testAlg.addProcess(new Process(1, 10, 2, conf.varResSetSizeLowerLimit, 2));
-            Process testProcess = new Process(2, 15, 2, conf.varResSetSizeLowerLimit, 5);
+            Process testProcess = new Process(2, 15, 3, conf.varResSetSizeLowerLimit, 5);
             testAlg.addProcess(testProcess);
-            testAlg.addProcess(new Process(3, 3, 2, conf.varResSetSizeLowerLimit, 0));
+            testAlg.addProcess(new Process(3, 3, 1, conf.varResSetSizeLowerLimit, 0));
             testAlg.addProcess(new Process(4, 7, 2, conf.varResSetSizeLowerLimit, 3));           
             testAlg.allocatePages();
             System.out.println(testProcess);
@@ -61,6 +63,7 @@ public class TestingMain {
             
             ArrayList<Page> fetchedPages;
             ArrayList<Page> pagesNotPlaced;
+            ArrayList<Page> pagesToClean;
             //DEMAND FETCH
 //            fetchedPages = new DemandFetchPolicy().fetch(testAlg.pages, testAlg.frames, testProcess, 0, conf);
 //            System.out.println("Fetched the pages "+fetchedPages);
@@ -73,20 +76,32 @@ public class TestingMain {
 //            testProcess.getPageTable().set(5, 0);
             fetchedPages = new PreFetchPolicy().fetch(testAlg.pages, testAlg.frames, testProcess, 10, conf);
             System.out.println("Fetched the pages "+fetchedPages);
-            System.out.println("Frames state: " + frames.getFrames());
+            System.out.println("Frames state: " + frames);
             
             NextAvailablePlacement nextAv = new NextAvailablePlacement();
+            FIFOPageReplacement fifoPR = new FIFOPageReplacement();
 
             pagesNotPlaced = nextAv.place(fetchedPages, frames, conf, testProcess);
             System.out.println("Didnt place the pages "+pagesNotPlaced);
-            System.out.println("Frames state: " + frames.getFrames());
+            System.out.println("Frames state: " + frames);
 
-            frames.getFrames().set(0, null);
-            fetchedPages = new DemandFetchPolicy().fetch(testAlg.pages, testAlg.frames, testProcess, 0, conf);
-            pagesNotPlaced = nextAv.place(fetchedPages, frames, conf, testProcess);
-            System.out.println("Didnt place the pages "+pagesNotPlaced);
-            System.out.println("Frames state: " + frames.getFrames());
+//            frames.getFrames().set(0, null);
+//            fetchedPages = new DemandFetchPolicy().fetch(testAlg.pages, testAlg.frames, testProcess, 0, conf);
+//            pagesNotPlaced = nextAv.place(fetchedPages, frames, conf, testProcess);
+//            System.out.println("Didnt place the pages "+pagesNotPlaced);
+//            System.out.println("Frames state: " + frames);
+
+            fetchedPages = new DemandFetchPolicy().fetch(testAlg.pages, testAlg.frames, testProcess, 1, conf);
+//            pagesNotPlaced = nextAv.place(fetchedPages, frames, conf, testProcess);
+//            System.out.println("Didnt place the pages "+pagesNotPlaced);
+//            System.out.println("Frames state: " + frames.getFrames());            
             
+            pagesToClean = fifoPR.replace(conf, fetchedPages, frames, testProcess);
+            System.out.println("Frames state: " + frames);
+
+            fetchedPages = new DemandFetchPolicy().fetch(testAlg.pages, testAlg.frames, testProcess, 2, conf);
+            pagesToClean = fifoPR.replace(conf, fetchedPages, frames, testProcess);
+            System.out.println("Frames state: " + frames);
             
         } catch (AlgorithmController.InsuficientMemoryException ex) {
             ex.printStackTrace();
@@ -96,4 +111,5 @@ public class TestingMain {
             ex.printStackTrace();
         }
     }
+    
 }

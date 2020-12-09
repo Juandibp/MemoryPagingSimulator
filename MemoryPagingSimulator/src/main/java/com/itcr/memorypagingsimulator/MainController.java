@@ -24,6 +24,8 @@ public class MainController {
     private MainWindow mainWindow;
     private ConfigDialog configDialog; 
     private GlobalConfig conf;
+    private boolean processFileLoaded = false;
+    private boolean referenceFileLoaded = false;
     
     public MainController(){
         this.conf = new GlobalConfig();

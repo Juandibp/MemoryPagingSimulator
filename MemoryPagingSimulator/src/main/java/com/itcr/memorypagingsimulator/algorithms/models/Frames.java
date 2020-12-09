@@ -88,6 +88,16 @@ public class Frames implements Iterable<Page>{
     public List<Page> getFrames() {
         return frames;
     }
+
+    @Override
+    public String toString() {
+        StringBuilder retVal= new StringBuilder("Frames{referenceTimes=" + referenceTimes + ", timer=" + timer +", frames={");
+        for(Page p:this.frames){
+            retVal.append("\n\t"+p+",");
+        }
+        retVal.append("}}");
+        return retVal.toString();
+    }
     
     
 

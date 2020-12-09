@@ -70,7 +70,6 @@ public class GlobalConfig {
         this.secondaryMemoryPages = secondaryMemoryPages;
     }
 
-
     
     public GlobalConfig() {
         this(
@@ -120,6 +119,8 @@ public class GlobalConfig {
         this.primaryMemoryFrames = c.primaryMemoryFrames;
         this.secondaryMemoryPages = c.secondaryMemoryPages;
     }
+    
+    
 
     @Override
     public String toString() {

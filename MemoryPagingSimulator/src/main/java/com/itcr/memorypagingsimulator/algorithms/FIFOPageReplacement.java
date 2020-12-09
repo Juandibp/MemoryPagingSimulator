@@ -68,10 +68,10 @@ public class FIFOPageReplacement extends ReplacementPolicy {
             }
         } else {
             List<Page> scope = frames.getFrames().stream()
-                    .filter(f -> proc.getPageList().stream().anyMatch(p -> p.getId() == f.getId()))
+                    .filter(f -> f!=null && proc.getPageList().stream().anyMatch(p -> p.getId() == f.getId()))
                     .collect(Collectors.toList());
             Pair<Integer, Integer> pIndex = processIndex.stream()
-                    .filter(elem -> elem.getValue0() == proc.getId())
+                    .filter(elem -> elem!=null && elem.getValue0() == proc.getId())
                     .findFirst().orElse(Pair.with(proc.getId(), 0));
             
             for(int i = 0 ; i < pagesToPlace.size() ; i++){
@@ -79,7 +79,8 @@ public class FIFOPageReplacement extends ReplacementPolicy {
                 frames.placePage(
                         pagesToPlace.get(i), 
                         this.findIndex(scope.get(pIndex.getValue1()), frames));
-                pIndex.setAt1(pIndex.getValue1()+1);
+
+                pIndex = pIndex.setAt1(pIndex.getValue1()+1);
                 if(pIndex.getValue1() == scope.size()){
                     pIndex.setAt1(0);
                 }

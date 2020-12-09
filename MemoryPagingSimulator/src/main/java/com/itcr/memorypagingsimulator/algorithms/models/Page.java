@@ -15,6 +15,7 @@ public class Page {
     private int basePointer;
     private int size;
     private int referenceCounter = 0;
+    private boolean dirty = false;
     private boolean isAllocated = false;
 
     public Page(int id, int basePointer, int size) {
@@ -58,6 +59,14 @@ public class Page {
 
     public void setSize(int size) {
         this.size = size;
+    }
+
+    public boolean isDirty() {
+        return dirty;
+    }
+
+    public void setDirty(boolean dirty) {
+        this.dirty = dirty;
     }
 
     public int getReferenceCounter() {
