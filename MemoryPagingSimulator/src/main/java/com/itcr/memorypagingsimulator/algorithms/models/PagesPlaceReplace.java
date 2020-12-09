@@ -15,5 +15,12 @@ public class PagesPlaceReplace {
     
     public ArrayList<Page> pagesPlaced = new ArrayList<>();
     public ArrayList<Page> pagesReplace = new ArrayList<>();
+
+    @Override
+    public String toString() {
+        return "PagesPlaceReplace{" + "\n\tpagesPlaced=" + pagesPlaced + ",\n\tpagesReplace=" + pagesReplace + "\n}";
+    }
+    
+    
     
 }

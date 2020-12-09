@@ -37,7 +37,7 @@ public class AlgorithmController {
     }
     
     
-    public void reference(int processId, int pageReferenced) throws InvalidProcessIdException, FetchPolicy.IllegalReferenceException{
+    public void reference(int processId, int pageReferenced, boolean writeOperation) throws InvalidProcessIdException, FetchPolicy.IllegalReferenceException{
         ArrayList<Page> pagesToClean = null;
         
         //fetch the page/pages with corresponding policy
@@ -49,7 +49,7 @@ public class AlgorithmController {
                 pages, frames, this.processes.stream()
                     .filter(p -> p.getId() == processId).findAny()
                     .orElseThrow(() -> new InvalidProcessIdException("No existe el proceso: "+processId)), 
-                pageReferenced, conf);
+                pageReferenced, conf, writeOperation);
         if(fetchedPages != null && !fetchedPages.isEmpty()){
         //  if pages where brought then page fault ocurred
         //  therefore call placement policy

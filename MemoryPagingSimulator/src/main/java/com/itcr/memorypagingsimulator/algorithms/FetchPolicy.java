@@ -18,7 +18,7 @@ import java.util.ArrayList;
 public abstract class FetchPolicy {
     
     public abstract ArrayList<Page> fetch(
-            Pages pages, Frames frames, Process process, int pageId, GlobalConfig conf) throws IllegalReferenceException;
+            Pages pages, Frames frames, Process process, int pageId, GlobalConfig conf, boolean writeOperation) throws IllegalReferenceException;
     
     public int getGlobalPageId(Process process, int id) throws IllegalReferenceException {
         if(id >= process.getPageTable().size()) throw new IllegalReferenceException();

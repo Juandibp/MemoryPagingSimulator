@@ -26,7 +26,7 @@ public class Page {
     
     @Override
     public String toString() {
-        return "Page{" + "id=" + id + ", basePointer=" + basePointer + ", size=" + size + '}';
+        return "Page{" + "id=" + id + ", basePointer=" + basePointer + ", size=" + size + ", references="+this.referenceCounter + (dirty ? ", dirty" : "") +'}';
     }
 
     public boolean isIsAllocated() {
@@ -81,8 +81,12 @@ public class Page {
         Page retVal = new Page(this.id, this.basePointer, this.size);
         retVal.setIsAllocated(this.isAllocated);
         retVal.setReferenceCounter  (this.referenceCounter);
+        retVal.setDirty(dirty);
         return retVal;
     }
     
-    public void reference(){ this.referenceCounter+=1; }
+    public void reference(boolean writeOperation){ 
+        this.referenceCounter+=1;
+        this.dirty = this.dirty || writeOperation;
+    }
 }

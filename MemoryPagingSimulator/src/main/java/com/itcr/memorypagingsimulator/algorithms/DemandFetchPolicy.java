@@ -19,16 +19,17 @@ import java.util.ArrayList;
 public class DemandFetchPolicy extends FetchPolicy{
     
     @Override
-    public ArrayList<Page> fetch(Pages pages, Frames frames, Process process, int pageId, GlobalConfig conf) throws IllegalReferenceException {
+    public ArrayList<Page> fetch(Pages pages, Frames frames, Process process, int pageId, GlobalConfig conf, boolean writeOperation) throws IllegalReferenceException {
         if(process.getPageTable().get(pageId) != null){
             //then its in a frame
-            frames.getFrames().get(process.getPageTable().get(pageId)).reference();
-            frames.reference(process.getPageTable().get(pageId));
+            Page p = frames.getFrames().get(process.getPageTable().get(pageId));
+            p.reference(writeOperation);
+            frames.reference(p.getId());
             return null;
         } else {
             ArrayList<Page> retVal = new ArrayList<>();
             Page fetchedPage = process.getPageList().get(pageId).clonePage();
-            fetchedPage.reference();
+            fetchedPage.reference(writeOperation);
             frames.reference(fetchedPage);
             retVal.add(fetchedPage);
             return retVal;

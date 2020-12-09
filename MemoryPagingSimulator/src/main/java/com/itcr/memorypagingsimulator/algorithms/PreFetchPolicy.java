@@ -19,10 +19,11 @@ import java.util.ArrayList;
 public class PreFetchPolicy extends FetchPolicy {
 
     @Override
-    public ArrayList<Page> fetch(Pages pages, Frames frames, Process process, int pageId, GlobalConfig conf) throws IllegalReferenceException {
+    public ArrayList<Page> fetch(Pages pages, Frames frames, Process process, int pageId, GlobalConfig conf, boolean writeOperation) throws IllegalReferenceException {
         if(process.getPageTable().get(pageId) != null){
             //no pageFault
-            frames.getFrames().get(process.getPageTable().get(pageId)).reference();
+            Page p = frames.getFrames().get(process.getPageTable().get(pageId));
+            p.reference(writeOperation);
             frames.reference(process.getPageTable().get(pageId));
             return null;
         } else {
@@ -35,20 +36,20 @@ public class PreFetchPolicy extends FetchPolicy {
                     if(process.getPageTable().get(i) == null) {
                         Page p = process.getPageList().get(i).clonePage();
                         if(i == pageId){        //this is the page originaly referenced 
-                            p.reference();
+                            p.reference(writeOperation);
                             frames.reference(p);
                         } 
                         retVal.add(p);
                     }
                 }
             } else {
-                int lower = (pageId+pageAmount) >= process.getPagesRequired() ? pageId : process.getPagesRequired() - pageAmount;
+                int lower = (pageId+pageAmount) >= process.getPagesRequired() ? process.getPagesRequired() - pageAmount : pageId;
                 for(int i = lower; i < lower+pageAmount;i++){
                     //bring the amount of pages that arent in main memory after the one referenced
                     if(process.getPageTable().get(i) == null) {
                         Page p = process.getPageList().get(i).clonePage();
                         if(i == pageId){//this is the page originaly referenced 
-                            p.reference();
+                            p.reference(writeOperation);
                             frames.reference(p);
                         } 
                         retVal.add(p);

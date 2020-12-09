@@ -77,7 +77,7 @@ public class TestingMain {
             
 
 //            testProcess.getPageTable().set(5, 0);
-            fetchedPages = new PreFetchPolicy().fetch(testAlg.pages, testAlg.frames, testProcess, 10, conf);
+            fetchedPages = new PreFetchPolicy().fetch(testAlg.pages, testAlg.frames, testProcess, 10, conf, true);
             System.out.println("Fetched the pages "+fetchedPages);
             System.out.println("Frames state: " + frames);
             
@@ -102,10 +102,10 @@ public class TestingMain {
 //            System.out.println("Didnt place the pages "+pagesNotPlaced);
 //            System.out.println("Frames state: " + frames);
 
-            fetchedPages = new DemandFetchPolicy().fetch(testAlg.pages, testAlg.frames, testProcess, 1, conf);
-//            pagesNotPlaced = nextAv.place(fetchedPages, frames, conf, testProcess);
-//            System.out.println("Didnt place the pages "+pagesNotPlaced);
-//            System.out.println("Frames state: " + frames.getFrames());            
+            fetchedPages = new DemandFetchPolicy().fetch(testAlg.pages, testAlg.frames, testProcess, 1, conf, true);
+            pagesNotPlaced = nextAv.place(fetchedPages, frames, conf, testProcess);
+            System.out.println("Didnt place the pages "+pagesNotPlaced);
+            System.out.println("Frames state: " + frames);            
 //            pagesToClean = fifoPR.replace(conf, fetchedPages, frames, testProcess);
 //            System.out.println("Frames state: " + frames);
 //
