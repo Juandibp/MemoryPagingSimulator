@@ -9,10 +9,13 @@ import com.itcr.memorypagingsimulator.algorithms.*;
 import com.itcr.memorypagingsimulator.algorithms.models.Frames;
 import com.itcr.memorypagingsimulator.algorithms.models.Page;
 import com.itcr.memorypagingsimulator.algorithms.models.Pages;
+import com.itcr.memorypagingsimulator.algorithms.models.PagesPlaceReplace;
 import java.util.ArrayList;
 import com.itcr.memorypagingsimulator.algorithms.models.Process;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 /**
  *
@@ -62,7 +65,7 @@ public class TestingMain {
             System.out.println("Page: " + testProcess.getPageTable());
             
             ArrayList<Page> fetchedPages;
-            ArrayList<Page> pagesNotPlaced;
+            PagesPlaceReplace pagesNotPlaced;
             ArrayList<Page> pagesToClean;
             //DEMAND FETCH
 //            fetchedPages = new DemandFetchPolicy().fetch(testAlg.pages, testAlg.frames, testProcess, 0, conf);
@@ -78,12 +81,20 @@ public class TestingMain {
             System.out.println("Fetched the pages "+fetchedPages);
             System.out.println("Frames state: " + frames);
             
+            List<Page> newList = new ArrayList<>();
+            List<Page> filtered = fetchedPages.stream()
+                    .filter(p -> !newList.stream().anyMatch(pp -> p.getId() == pp.getId()))
+                    .collect(Collectors.toList());
+            System.out.println(fetchedPages);
+            System.out.println(filtered);
+
             NextAvailablePlacement nextAv = new NextAvailablePlacement();
             FIFOPageReplacement fifoPR = new FIFOPageReplacement();
 
             pagesNotPlaced = nextAv.place(fetchedPages, frames, conf, testProcess);
             System.out.println("Didnt place the pages "+pagesNotPlaced);
             System.out.println("Frames state: " + frames);
+
 
 //            frames.getFrames().set(0, null);
 //            fetchedPages = new DemandFetchPolicy().fetch(testAlg.pages, testAlg.frames, testProcess, 0, conf);
@@ -95,13 +106,12 @@ public class TestingMain {
 //            pagesNotPlaced = nextAv.place(fetchedPages, frames, conf, testProcess);
 //            System.out.println("Didnt place the pages "+pagesNotPlaced);
 //            System.out.println("Frames state: " + frames.getFrames());            
-            
-            pagesToClean = fifoPR.replace(conf, fetchedPages, frames, testProcess);
-            System.out.println("Frames state: " + frames);
-
-            fetchedPages = new DemandFetchPolicy().fetch(testAlg.pages, testAlg.frames, testProcess, 2, conf);
-            pagesToClean = fifoPR.replace(conf, fetchedPages, frames, testProcess);
-            System.out.println("Frames state: " + frames);
+//            pagesToClean = fifoPR.replace(conf, fetchedPages, frames, testProcess);
+//            System.out.println("Frames state: " + frames);
+//
+//            fetchedPages = new DemandFetchPolicy().fetch(testAlg.pages, testAlg.frames, testProcess, 2, conf);
+//            pagesToClean = fifoPR.replace(conf, fetchedPages, frames, testProcess);
+//            System.out.println("Frames state: " + frames);
             
         } catch (AlgorithmController.InsuficientMemoryException ex) {
             ex.printStackTrace();

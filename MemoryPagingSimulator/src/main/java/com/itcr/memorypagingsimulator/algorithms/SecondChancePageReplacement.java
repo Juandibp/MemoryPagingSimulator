@@ -48,7 +48,7 @@ public class SecondChancePageReplacement extends ReplacementPolicy{
     }
     
     @Override
-    public ArrayList<Page> replace(GlobalConfig conf, List<Page> pagesToPlace, Frames frames, Process processId) {
+    public ArrayList<Page> replace(GlobalConfig conf, List<Page> pagesToPlace, List<Page> pagesJustPlaced, Frames frames, Process proc) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

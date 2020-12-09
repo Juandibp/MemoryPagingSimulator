@@ -8,6 +8,7 @@ package com.itcr.memorypagingsimulator.algorithms;
 import com.itcr.memorypagingsimulator.GlobalConfig;
 import com.itcr.memorypagingsimulator.algorithms.models.Frames;
 import com.itcr.memorypagingsimulator.algorithms.models.Page;
+import com.itcr.memorypagingsimulator.algorithms.models.PagesPlaceReplace;
 import java.util.ArrayList;
 import java.util.List;
 import com.itcr.memorypagingsimulator.algorithms.models.Process;
@@ -18,8 +19,9 @@ import com.itcr.memorypagingsimulator.algorithms.models.Process;
 public class FirstAvailablePlacement extends PlacementPolicy{
 
     @Override
-    public ArrayList<Page> place(ArrayList<Page> pages, Frames frames, GlobalConfig conf, Process proc) {
+    public PagesPlaceReplace place(ArrayList<Page> pages, Frames frames, GlobalConfig conf, Process proc) {
         //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        PagesPlaceReplace retVal = new PagesPlaceReplace();
         List<Page> RAM = frames.getFrames();
         
         for(int i = 0; i<RAM.size(); i++){
@@ -27,16 +29,18 @@ public class FirstAvailablePlacement extends PlacementPolicy{
                 if(RAM.get(i) == null){
                     RAM.set(i, pages.get(0));
                     Page tempPage = pages.remove(0);
-                    
+                    retVal.pagesPlaced.add(tempPage);
                     proc.allocatePage(tempPage, i);
                     
                 }
             }
             else{
-                return pages;
+                retVal.pagesReplace = pages;
+                return retVal;
             }
         }
-        return pages;
+        retVal.pagesReplace = pages;
+        return retVal;
     }
     
 }

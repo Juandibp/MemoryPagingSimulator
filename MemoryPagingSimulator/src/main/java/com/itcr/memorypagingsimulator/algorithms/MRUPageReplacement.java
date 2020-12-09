@@ -13,6 +13,7 @@ import com.itcr.memorypagingsimulator.algorithms.models.Reference;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  *
@@ -48,8 +49,41 @@ public class MRUPageReplacement extends ReplacementPolicy{
     }
 
     @Override
-    public ArrayList<Page> replace(GlobalConfig conf, List<Page> pagesToPlace, Frames frames, Process processId) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public ArrayList<Page> replace(GlobalConfig conf, List<Page> pagesToPlace, List<Page> pagesJustPlaced, Frames frames, Process proc) {
+        List<Page> scope;
+        
+        //appart from implementing scope we dont want to replace the pages 
+        //that were just put into main memory... that would be bad :c
+        
+        if(conf.replacementScope == GlobalConfig.ReplacementScopeSetting.GLOBAL){
+            scope = frames.getFrames()
+                    .stream()
+                    .filter(p -> !pagesJustPlaced.stream().anyMatch(pp -> pp.getId() == p.getId()))
+                    .collect(Collectors.toList());
+        } else {
+            scope = frames.getFrames()
+                    .stream()
+                    .filter(p -> (!pagesJustPlaced.stream().anyMatch(pp -> pp.getId() == p.getId())) && 
+                                   proc.getPageList().stream().anyMatch(pp -> pp.getId() == p.getId()))
+                    .collect(Collectors.toList());
+        }
+        List<Page> sortedByReferenceTime = scope.stream()
+                .filter(p -> !pagesToPlace.stream().anyMatch(pp -> p.getId() == pp.getId()))
+                .sorted((b,a) -> frames.getReferenceTimes().get(a.getId()) - frames.getReferenceTimes().get(b.getId()))
+                .collect(Collectors.toList());
+        ArrayList<Page> returnValue = new ArrayList<>();
+
+        for(Page p : pagesToPlace){
+            if(sortedByReferenceTime.isEmpty())
+                //by this point the referenced page should be in memory
+                //we can just... leave I guess
+                break;
+            if(!scope.stream().anyMatch(elem -> p.getId() == elem.getId())){
+                frames.placePage(p, this.findIndex(sortedByReferenceTime.remove(0), frames));
+            }
+        }
+        
+        return returnValue;        
     }
 
 }

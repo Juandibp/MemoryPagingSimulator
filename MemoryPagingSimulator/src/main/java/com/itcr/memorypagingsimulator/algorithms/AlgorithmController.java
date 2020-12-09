@@ -9,6 +9,7 @@ import com.itcr.memorypagingsimulator.GlobalConfig;
 import com.itcr.memorypagingsimulator.algorithms.models.Frames;
 import com.itcr.memorypagingsimulator.algorithms.models.Page;
 import com.itcr.memorypagingsimulator.algorithms.models.Pages;
+import com.itcr.memorypagingsimulator.algorithms.models.PagesPlaceReplace;
 import com.itcr.memorypagingsimulator.algorithms.models.Process;
 import java.util.ArrayList;
 
@@ -53,15 +54,15 @@ public class AlgorithmController {
         //  if pages where brought then page fault ocurred
         //  therefore call placement policy
             pageFaultCount++;
-            ArrayList<Page> pagesForReplace = this.placementpolicy.place(fetchedPages, frames, conf, this.processes.get(processId));
+            PagesPlaceReplace pagesPlaceReplace = this.placementpolicy.place(fetchedPages, frames, conf, this.processes.get(processId));
             //placementPolicy should return List<Page> or null,
             //  if didnt return null/empty the returned processes 
             //  should replace others
-            if(pagesForReplace != null && !pagesForReplace.isEmpty()){
+            if(pagesPlaceReplace != null && !pagesPlaceReplace.pagesReplace.isEmpty()){
                 //replacementPolicy has to receive as parameters
                 //  the pages to place, replacement scope, resident set size
                 //  the returned pages must be asigned to pagesToClean
-                pagesToClean = this.replacementPolicy.replace(conf, pagesForReplace, frames, this.processes.get(processId));
+                pagesToClean = this.replacementPolicy.replace(conf, pagesPlaceReplace.pagesReplace, pagesPlaceReplace.pagesPlaced, frames, this.processes.get(processId));
             }
         }
         //cleaning policy, gets always called with pagesToClean

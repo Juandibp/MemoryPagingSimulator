@@ -47,16 +47,17 @@ public class LFUPageReplacement extends ReplacementPolicy{
             }
 
     }
-
-   
     
     @Override
-    public ArrayList<Page> replace(GlobalConfig conf, List<Page> pagesToPlace, Frames frames, Process proc) {
+    public ArrayList<Page> replace(GlobalConfig conf, List<Page> pagesToPlace, List<Page> pagesJustPlaced, Frames frames, Process proc) {
         ArrayList<Page> victims = new ArrayList<>();
         List<Page> listVictims = new ArrayList<>();
+//        pagesJustPlaced = pagesJustPlaced == null ? new ArrayList<>() : pagesJustPlaced;
+        
         if(conf.replacementScope == GlobalConfig.ReplacementScopeSetting.GLOBAL){
             listVictims = frames.getFrames()
                     .stream()
+                    .filter(elem -> pagesJustPlaced.stream().anyMatch(pjp -> pjp.getId() == elem.getId()))
                     .sorted((a,b)-> a.getReferenceCounter() - b.getReferenceCounter())
                     .collect(Collectors.toList());
         }else{

@@ -25,7 +25,7 @@ public abstract class ReplacementPolicy {
     
     protected abstract void allocate();
     
-    public abstract ArrayList<Page> replace(GlobalConfig conf, List<Page> pagesToPlace, Frames frames, Process processId);
+    public abstract ArrayList<Page> replace(GlobalConfig conf, List<Page> pagesToPlace, List<Page> pagesJustPlaced, Frames frames, Process proc);
     
     public List<Reference> call() throws Exception{
         return allocateReferences();

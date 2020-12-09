@@ -6,6 +6,7 @@
 package com.itcr.memorypagingsimulator.algorithms.models;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import org.javatuples.Pair;
@@ -19,16 +20,14 @@ public class Frames implements Iterable<Page>{
     
     /** Los numeros son los ids de las paginas */
     private List<Page> frames;
-    private List<Pair<Integer, Integer>> referenceTimes;
+    private HashMap<Integer, Integer> referenceTimes; //key is page id, value is time referenced
     private int timer = 0;
     
     public Frames(int numberOfFrames) {
         this.frames = new ArrayList<>(numberOfFrames);
-        this.referenceTimes = new ArrayList<>(numberOfFrames);
-        
+        this.referenceTimes = new HashMap();
         for (int i = 0; i < numberOfFrames; i++) {
             frames.add(null);
-            referenceTimes.add(null);
         }
     }
     
@@ -62,21 +61,20 @@ public class Frames implements Iterable<Page>{
     
     public void placePage(Page p, int index){
         this.frames.set(index, p);
-        this.referenceTimes.set(index, Pair.with(index, timer));
         timer++;
     }
     
     public void reference(Page p){
-        this.referenceTimes.set(p.getId(), Pair.with(p.getId(), timer));
+        this.referenceTimes.put(p.getId(), timer);
         timer++;
     }
 
-    public void reference(int pageId){
-        this.referenceTimes.set(pageId, Pair.with(pageId, timer));
+    public void reference(int pageId){        
+        this.referenceTimes.put(pageId, timer);
         timer++;
     }
 
-    public List<Pair<Integer, Integer>> getReferenceTimes() {
+    public HashMap<Integer, Integer> getReferenceTimes() {
         return referenceTimes;
     }
 

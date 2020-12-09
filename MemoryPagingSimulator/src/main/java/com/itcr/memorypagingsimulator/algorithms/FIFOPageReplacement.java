@@ -52,10 +52,9 @@ public class FIFOPageReplacement extends ReplacementPolicy {
     
     private int currentIndex =0; //to be used in GLOBAL resident set
     private List<Pair<Integer, Integer>> processIndex = new ArrayList<>();
-                                //to be used in LOCAL residentSet
 
     @Override
-    public ArrayList<Page> replace(GlobalConfig conf, List<Page> pagesToPlace, Frames frames, Process proc) {
+    public ArrayList<Page> replace(GlobalConfig conf, List<Page> pagesToPlace, List<Page> pagesJustPlaced, Frames frames, Process proc) {
         ArrayList<Page> retValue = new ArrayList<>();
         if(conf.replacementScope == GlobalConfig.ReplacementScopeSetting.GLOBAL){
             for(int i = 0 ; i < pagesToPlace.size() ; i++){

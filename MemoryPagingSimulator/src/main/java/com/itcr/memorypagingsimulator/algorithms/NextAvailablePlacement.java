@@ -8,6 +8,7 @@ package com.itcr.memorypagingsimulator.algorithms;
 import com.itcr.memorypagingsimulator.GlobalConfig;
 import com.itcr.memorypagingsimulator.algorithms.models.Frames;
 import com.itcr.memorypagingsimulator.algorithms.models.Page;
+import com.itcr.memorypagingsimulator.algorithms.models.PagesPlaceReplace;
 import java.util.ArrayList;
 import java.util.List;
 import com.itcr.memorypagingsimulator.algorithms.models.Process;
@@ -18,7 +19,9 @@ import com.itcr.memorypagingsimulator.algorithms.models.Process;
 public class NextAvailablePlacement extends PlacementPolicy{
     public int lastIndex = 0;
     @Override
-    public ArrayList<Page> place(ArrayList<Page> pages, Frames frames, GlobalConfig conf, Process proc) {
+    public PagesPlaceReplace place(ArrayList<Page> pages, Frames frames, GlobalConfig conf, Process proc) {
+        PagesPlaceReplace retVal = new PagesPlaceReplace();
+        
         List<Page> RAM = frames.getFrames();
         for(int i=lastIndex+1; i != lastIndex; i++){
             
@@ -30,7 +33,7 @@ public class NextAvailablePlacement extends PlacementPolicy{
                 if(RAM.get(i-1) == null){
                     RAM.set(i-1, pages.get(0));
                     Page tempPage = pages.remove(0);
-                    
+                    retVal.pagesPlaced.add(tempPage);
                     proc.allocatePage(tempPage, i-1);
                 }
             }
@@ -39,7 +42,8 @@ public class NextAvailablePlacement extends PlacementPolicy{
                 break;
             }
         }
-        return pages;
+        retVal.pagesReplace = pages;
+        return retVal;
     }
     
 }
