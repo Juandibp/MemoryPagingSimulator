@@ -53,7 +53,9 @@ public class LRUPageReplacement extends ReplacementPolicy{
                 //we can just... leave I guess
                 break;
             if(!scope.stream().anyMatch(elem -> p.getId() == elem.getId())){
-                frames.placePage(p, this.findIndex(sortedByReferenceTime.remove(0), frames));
+                int index = this.findIndex(sortedByReferenceTime.remove(0), frames);
+                frames.placePage(p, index);
+                proc.allocatePage(p, index);
             }
         }
         

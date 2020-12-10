@@ -45,7 +45,9 @@ public class LFUPageReplacement extends ReplacementPolicy{
         for(int i = 0; i< pagesToPlace.size(); i++){
             Page victim = listVictims.get(i);
             if(!pagesToPlace.contains(victim)){
-                frames.placePage(pagesToPlace.get(i), findIndex(victim,frames));
+                int index =  findIndex(victim,frames);
+                frames.placePage(pagesToPlace.get(i), index);
+                proc.allocatePage(victim, index);
                 victims.add(victim);
             }
         }
