@@ -8,9 +8,6 @@ import javax.swing.*;
 import com.formdev.flatlaf.FlatDarculaLaf;
 import com.formdev.flatlaf.FlatDarkLaf;
 import java.awt.Color;
-import java.io.File;
-import java.io.IOException;
-import javax.swing.filechooser.FileSystemView;
 /**
  *
  * @author lopez
@@ -18,16 +15,12 @@ import javax.swing.filechooser.FileSystemView;
 public class MainWindow extends javax.swing.JFrame {
 
     public MainController mainController;
-    private ProcessFileChooserDialog processFileChooserDialog;
-    private ReferenceFileChooserDialog referenceFileChooserDialog; 
     /**
      * Creates new form MainWindoew
      */
     public MainWindow(MainController m) {
         initComponents();
         this.mainController = m;
-        this.processFileChooserDialog = new ProcessFileChooserDialog(this, true);
-        this.referenceFileChooserDialog = new ReferenceFileChooserDialog(this, true);
     }
 
     /**
@@ -139,11 +132,11 @@ public class MainWindow extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
-        this.processFileChooserDialog.setVisible(true);
+        this.mainController.openProcessLoader();
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
-        this.referenceFileChooserDialog.setVisible(true);
+        this.mainController.openReferenceLoader();
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 
     private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed

@@ -129,6 +129,9 @@ public class AlgorithmController {
         this.setPlacementPolicy();
         this.setReplacementPolicy();
         this.setCleaningPolicy();
+        if(this.conf.replacementScope == GlobalConfig.ReplacementScopeSetting.GLOBAL && this.conf.residentSetSize == GlobalConfig.ResidentSetSizeSetting.FIXED){
+            throw new IllegalArgumentException("Scope cant be global with a fixed set size");
+        }
     }
 
     public void setConfig(GlobalConfig conf) {

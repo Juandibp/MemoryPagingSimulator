@@ -122,7 +122,7 @@ public class Process {
             for(int j = 0 ; j < frames.getFrames().size() ; j++){
                 Page p = pageList.get(i);
                 Page f = frames.getFrames().get(j);
-                if(p.getId() == f.getId()){
+                if(f!=null && p.getId() == f.getId()){
                     this.pageTable.set(i, j);
                     break;                    
                 }

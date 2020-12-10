@@ -6,7 +6,15 @@
 package com.itcr.memorypagingsimulator;
 
 import java.awt.Dimension;
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.ArrayList;
+import org.javatuples.Triplet;
+
+import static javax.swing.JOptionPane.showMessageDialog;
 
 /**
  *
@@ -15,14 +23,23 @@ import java.io.File;
 public class ReferenceFileChooserDialog extends javax.swing.JDialog {
     
     private Dimension initialSize;
+    private File loadedFile;
+    private ArrayList<Triplet<Integer, Integer, Boolean>> references;
+    private GlobalConfig conf;
 
     /**
      * Creates new form ProcessFileChooserDialog
      */
-    public ReferenceFileChooserDialog(java.awt.Frame parent, boolean modal) {
+    public ReferenceFileChooserDialog(java.awt.Frame parent, boolean modal, GlobalConfig conf) {
         super(parent, modal);
         initComponents();
         this.initialSize = this.getSize();
+        this.conf = conf;
+        this.references = new ArrayList<>();
+    }
+
+    public ArrayList<Triplet<Integer, Integer, Boolean>> getReferences() {
+        return references;
     }
 
     /**
@@ -84,11 +101,46 @@ public class ReferenceFileChooserDialog extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void referencesFileChooserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_referencesFileChooserActionPerformed
-        File selectedFile = this.referencesFileChooser.getSelectedFile();
-        System.out.println("El directorio de referencias seleccionado: "+selectedFile);
-        System.out.println(evt.getActionCommand());
+        this.loadedFile = this.referencesFileChooser.getSelectedFile();
+        if(!this.references.isEmpty() 
+                && javax.swing.JOptionPane.showConfirmDialog(null, "You already have processses loaded. Loading a new file will reset the program's state. Do you want to proceed?") == 0){
+            this.references.clear();
+            this.readReferences();   
+        } else if (this.references.isEmpty()) {
+            this.readReferences();
+        }
     }//GEN-LAST:event_referencesFileChooserActionPerformed
 
+     private void readReferences() {
+        try {
+            FileReader reader = new FileReader(this.loadedFile);
+            BufferedReader buffedReader = new BufferedReader(reader);
+            for(String line = buffedReader.readLine(); line != null ; line = buffedReader.readLine()){
+                if(line.startsWith("--")) continue;
+                String[] values = line.split(",");
+//                int id, int pagesRequired, int frameSpace, int frameSpaceLowerLimit, int priority
+                this.references.add(Triplet.with(
+                        Integer.parseInt(values[0].strip()), 
+                        Integer.parseInt(values[1].strip()), 
+                        values[2].toLowerCase().strip().equals("w")));
+            }
+            
+            System.out.println(this.references);
+            showMessageDialog(null, "References loaded.");
+        } catch(FileNotFoundException ex) {
+            showMessageDialog(null, "No existe el archivo seleccionado. Intente de nuevo.", "Error de archivo", javax.swing.JOptionPane.ERROR_MESSAGE);
+            this.loadedFile = null;
+        } catch(IndexOutOfBoundsException ex) {
+            showMessageDialog(null, "El formato de archivo es incorrecto. Por favor reviselo segun la guia.", "Error de archivo", javax.swing.JOptionPane.ERROR_MESSAGE);
+            this.loadedFile = null;
+        } catch (IOException ex) {
+            showMessageDialog(null, "Ocurrio un error de lectura. Puede que algunos procesos se hayan cargado.", "Error de archivo", javax.swing.JOptionPane.ERROR_MESSAGE);
+        } catch (NumberFormatException ex){
+            showMessageDialog(null, "El formato de archivo es incorrecto. Por favor reviselo segun la guia.", "Error de archivo", javax.swing.JOptionPane.ERROR_MESSAGE);
+            ex.printStackTrace();
+        }
+    }
+    
     private void formComponentResized(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentResized
         if(this.initialSize != null) this.setSize(initialSize);
     }//GEN-LAST:event_formComponentResized
@@ -96,45 +148,45 @@ public class ReferenceFileChooserDialog extends javax.swing.JDialog {
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(ReferenceFileChooserDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(ReferenceFileChooserDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(ReferenceFileChooserDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(ReferenceFileChooserDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-        //</editor-fold>
-
-        /* Create and display the dialog */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                ReferenceFileChooserDialog dialog = new ReferenceFileChooserDialog(new javax.swing.JFrame(), true);
-                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
-                    @Override
-                    public void windowClosing(java.awt.event.WindowEvent e) {
-                        System.exit(0);
-                    }
-                });
-                dialog.setVisible(true);
-            }
-        });
-    }
+//    public static void main(String args[]) {
+//        /* Set the Nimbus look and feel */
+//        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+//        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+//         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+//         */
+//        try {
+//            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+//                if ("Nimbus".equals(info.getName())) {
+//                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+//                    break;
+//                }
+//            }
+//        } catch (ClassNotFoundException ex) {
+//            java.util.logging.Logger.getLogger(ReferenceFileChooserDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//        } catch (InstantiationException ex) {
+//            java.util.logging.Logger.getLogger(ReferenceFileChooserDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//        } catch (IllegalAccessException ex) {
+//            java.util.logging.Logger.getLogger(ReferenceFileChooserDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+//            java.util.logging.Logger.getLogger(ReferenceFileChooserDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//        }
+//        //</editor-fold>
+//        //</editor-fold>
+//
+//        /* Create and display the dialog */
+//        java.awt.EventQueue.invokeLater(new Runnable() {
+//            public void run() {
+//                ReferenceFileChooserDialog dialog = new ReferenceFileChooserDialog(new javax.swing.JFrame(), true);
+//                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
+//                    @Override
+//                    public void windowClosing(java.awt.event.WindowEvent e) {
+//                        System.exit(0);
+//                    }
+//                });
+//                dialog.setVisible(true);
+//            }
+//        });
+//    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;

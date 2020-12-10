@@ -6,9 +6,12 @@
 package com.itcr.memorypagingsimulator;
 
 import com.formdev.flatlaf.FlatDarkLaf;
+import com.itcr.memorypagingsimulator.algorithms.AlgorithmController;
+import com.itcr.memorypagingsimulator.algorithms.models.Process;
 import java.awt.Color;
 import java.awt.Window;
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFrame;
@@ -22,7 +25,10 @@ import javax.swing.UIManager;
 public class MainController {
 
     private MainWindow mainWindow;
-    private ConfigDialog configDialog; 
+    private ConfigDialog configDialog;
+    private AlgorithmController algorithController;
+    private ProcessFileChooserDialog processFileChooserDialog;
+    private ReferenceFileChooserDialog referenceFileChooserDialog;
     private GlobalConfig conf;
     private boolean processFileLoaded = false;
     private boolean referenceFileLoaded = false;
@@ -31,6 +37,8 @@ public class MainController {
         this.conf = new GlobalConfig();
         this.mainWindow = new MainWindow(this);
         this.configDialog = new ConfigDialog(this.mainWindow, true, conf);
+        this.processFileChooserDialog = new ProcessFileChooserDialog(this.mainWindow, true, this);
+        this.referenceFileChooserDialog = new ReferenceFileChooserDialog(this.mainWindow, true, conf);
     }
     
     public static void main(String args[]) {        
@@ -62,8 +70,24 @@ public class MainController {
         this.configDialog.setVisible(true);
     }
     
+    public void openProcessLoader(){
+        this.processFileChooserDialog.setVisible(true);
+    }
+    
+    public void openReferenceLoader(){
+        this.referenceFileChooserDialog.setVisible(true);
+    }
+
+    public GlobalConfig getConf() {
+        return conf;
+    }
+    
     public void updateConfig(GlobalConfig newConfig){
         this.conf = newConfig;
+    }
+    
+    public void loadProcesses(ArrayList<Process> processes){
+        this.algorithController = new AlgorithmController(processes, conf);
     }
     
     public void printConfig(){
