@@ -47,71 +47,41 @@ public class TestingMain {
     
     public void runGtest(){
         try {
-            ArrayList<Process> processes = new ArrayList<>();
-            Frames frames = new Frames(10);
-            Pages pages = new Pages(50);
-            AlgorithmController testAlg = new AlgorithmController(processes, this.conf);
             this.conf.replacementScope = GlobalConfig.ReplacementScopeSetting.LOCAL;
+            this.conf.primaryMemoryFrames = 10;
+            this.conf.secondaryMemoryPages = 50;
+            this.conf.placementPolicy = GlobalConfig.PlacementPolicySetting.NEXT_AVAILABLE;
+            ArrayList<Process> processes = new ArrayList<>();
+            AlgorithmController testAlg = new AlgorithmController(processes, this.conf);
             
-            testAlg.addProcess(new Process(0, 20, 2, conf.varResSetSizeLowerLimit, 2));
-            testAlg.addProcess(new Process(1, 10, 2, conf.varResSetSizeLowerLimit, 2));
-            Process testProcess = new Process(2, 15, 3, conf.varResSetSizeLowerLimit, 5);
+            testAlg.addProcess(new Process(0, 15, 2, conf.varResSetSizeLowerLimit, 2));
+            testAlg.addProcess(new Process(1, 5, 2, conf.varResSetSizeLowerLimit, 2));
+            Process testProcess = new Process(2, 20, 3, conf.varResSetSizeLowerLimit, 5);
             testAlg.addProcess(testProcess);
             testAlg.addProcess(new Process(3, 3, 1, conf.varResSetSizeLowerLimit, 0));
             testAlg.addProcess(new Process(4, 7, 2, conf.varResSetSizeLowerLimit, 3));           
             testAlg.allocatePages();
+            Frames frames = testAlg.frames;
+            Pages pages = testAlg.pages;
+            
             System.out.println(testProcess);
             System.out.println("Config: " + this.conf);
-            System.out.println("Page: " + testProcess.getPageTable());
+            System.out.println("Test process Pages: " + testProcess.getPageTable());     
+            System.out.println(this.processes);
             
-            ArrayList<Page> fetchedPages;
-            PagesPlaceReplace pagesNotPlaced;
-            ArrayList<Page> pagesToClean;
-            //DEMAND FETCH
-//            fetchedPages = new DemandFetchPolicy().fetch(testAlg.pages, testAlg.frames, testProcess, 0, conf);
-//            System.out.println("Fetched the pages "+fetchedPages);
-//
-//            pagesNotPlaced = new FirstAvailablePlacement().place(fetchedPages, frames, conf, testProcess);
-//            System.out.println("Didnt place the pages "+pagesNotPlaced);
-//            System.out.println("Frames state: " + frames.getFrames());
+            System.out.println("--------------------- FIRST REFERENCE -------------------");
+            testAlg.reference(0, 0, true);
+            testAlg.reference(1, 0, false);
+            testAlg.reference(2, 0, true);
+            testAlg.reference(3, 0, false);
+            testAlg.reference(2, 1, false);
+            testAlg.reference(2, 2, true);
+            testAlg.reference(2, 3, true);
             
-
-//            testProcess.getPageTable().set(5, 0);
-            fetchedPages = new PreFetchPolicy().fetch(testAlg.pages, testAlg.frames, testProcess, 10, conf, true);
-            System.out.println("Fetched the pages "+fetchedPages);
             System.out.println("Frames state: " + frames);
+            System.out.println("2's page ids: " + testProcess.getPageTable());
             
-            List<Page> newList = new ArrayList<>();
-            List<Page> filtered = fetchedPages.stream()
-                    .filter(p -> !newList.stream().anyMatch(pp -> p.getId() == pp.getId()))
-                    .collect(Collectors.toList());
-            System.out.println(fetchedPages);
-            System.out.println(filtered);
-
-            NextAvailablePlacement nextAv = new NextAvailablePlacement();
-            FIFOPageReplacement fifoPR = new FIFOPageReplacement();
-
-            pagesNotPlaced = nextAv.place(fetchedPages, frames, conf, testProcess);
-            System.out.println("Didnt place the pages "+pagesNotPlaced);
-            System.out.println("Frames state: " + frames);
-
-
-//            frames.getFrames().set(0, null);
-//            fetchedPages = new DemandFetchPolicy().fetch(testAlg.pages, testAlg.frames, testProcess, 0, conf);
-//            pagesNotPlaced = nextAv.place(fetchedPages, frames, conf, testProcess);
-//            System.out.println("Didnt place the pages "+pagesNotPlaced);
-//            System.out.println("Frames state: " + frames);
-
-            fetchedPages = new DemandFetchPolicy().fetch(testAlg.pages, testAlg.frames, testProcess, 1, conf, true);
-            pagesNotPlaced = nextAv.place(fetchedPages, frames, conf, testProcess);
-            System.out.println("Didnt place the pages "+pagesNotPlaced);
-            System.out.println("Frames state: " + frames);            
-//            pagesToClean = fifoPR.replace(conf, fetchedPages, frames, testProcess);
-//            System.out.println("Frames state: " + frames);
-//
-//            fetchedPages = new DemandFetchPolicy().fetch(testAlg.pages, testAlg.frames, testProcess, 2, conf);
-//            pagesToClean = fifoPR.replace(conf, fetchedPages, frames, testProcess);
-//            System.out.println("Frames state: " + frames);
+            
             
         } catch (AlgorithmController.InsuficientMemoryException ex) {
             ex.printStackTrace();
@@ -119,6 +89,8 @@ public class TestingMain {
             ex.printStackTrace();
         } catch (AlgorithmController.LoadControlExcededException ex) {
             ex.printStackTrace();
+        } catch (AlgorithmController.InvalidProcessIdException ex) {
+            Logger.getLogger(TestingMain.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     

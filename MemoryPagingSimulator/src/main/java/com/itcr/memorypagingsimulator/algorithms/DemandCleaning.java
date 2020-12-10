@@ -18,7 +18,14 @@ public class DemandCleaning extends CleaningPolicy {
 
     @Override
     public void clean(ArrayList<Page> replacementPages, Frames frames, Pages pages) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        if(replacementPages == null || replacementPages.isEmpty()) 
+            return;
+        
+        replacementPages.forEach(p -> {
+            p.setDirty(false);
+            pages.addPage(p);
+        });
+        
     }
     
 }

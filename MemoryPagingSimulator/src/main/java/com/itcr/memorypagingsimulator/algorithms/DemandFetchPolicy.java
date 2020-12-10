@@ -28,7 +28,9 @@ public class DemandFetchPolicy extends FetchPolicy{
             return null;
         } else {
             ArrayList<Page> retVal = new ArrayList<>();
-            Page fetchedPage = process.getPageList().get(pageId).clonePage();
+            //traducir dirección de pagina local a pagina global
+            //para traerlo de pages... PAGES, no de la lista en el proceso... just in case
+            Page fetchedPage = pages.getPage(process.getPageId(pageId)).clonePage();
             fetchedPage.reference(writeOperation);
             frames.reference(fetchedPage);
             retVal.add(fetchedPage);

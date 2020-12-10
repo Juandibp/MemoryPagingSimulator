@@ -20,34 +20,7 @@ import java.util.stream.Collectors;
  * @author juand
  */
 public class LFUPageReplacement extends ReplacementPolicy{
-    	
-    @Override
-    protected void allocate() {
-        LinkedList<Integer> queue = new LinkedList<>();
-        Frames past = new Frames(frames);
-        for(Reference r: references){
-            int ref = r.getReference();
-            Frames f = r.getFrames();
-            f.copyAll(past);
-            queue.remove(new Integer(ref));
-            queue.addLast(ref);
-            System.out.println("LRUAlloc.allocate( )" + ref + " " + f.contains(ref));
-            if(!f.contains(ref)){
-                faults++;
-                if(f.thereIsAnEmptyFrame()){
-                    //f.set(f.getEmptyFrame(), ref);
-                }else{
-                    int victim = queue.removeFirst();
-                    //f.swap(victim, ref);
-                }
-            }
 
-            past.copyAll(f);
-
-            }
-
-    }
-    
     @Override
     public ArrayList<Page> replace(GlobalConfig conf, List<Page> pagesToPlace, List<Page> pagesJustPlaced, Frames frames, Process proc) {
         ArrayList<Page> victims = new ArrayList<>();
@@ -57,13 +30,13 @@ public class LFUPageReplacement extends ReplacementPolicy{
         if(conf.replacementScope == GlobalConfig.ReplacementScopeSetting.GLOBAL){
             listVictims = frames.getFrames()
                     .stream()
-                    .filter(elem -> pagesJustPlaced.stream().anyMatch(pjp -> pjp.getId() == elem.getId()))
+                    .filter(elem -> pagesJustPlaced.stream().noneMatch(pjp -> pjp.getId() == elem.getId()))
                     .sorted((a,b)-> a.getReferenceCounter() - b.getReferenceCounter())
                     .collect(Collectors.toList());
         }else{
             listVictims = frames.getFrames()
                     .stream()
-                    .filter(var -> proc.getPageList().stream().anyMatch(nombredevariable -> nombredevariable.getId() == var.getId()))
+                    .filter(var -> proc.getPageList().stream().noneMatch(nombredevariable -> nombredevariable.getId() == var.getId()))
                     .sorted((a,b)-> a.getReferenceCounter() - b.getReferenceCounter())
                     .collect(Collectors.toList());
         }

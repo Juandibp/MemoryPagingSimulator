@@ -21,34 +21,7 @@ import org.javatuples.Pair;
  * @author juand
  */
 public class FIFOPageReplacement extends ReplacementPolicy {
-    
-    @Override
-    protected void allocate() {
-        LinkedList<Integer> queue = new LinkedList<>();
-        Frames past = new Frames(frames);
-        for(Reference r: references){
-            int ref = r.getReference();
-            Frames f = r.getFrames();
-            f.copyAll(past);
-            System.out.println("FIFOAlloc.allocate( )" + ref + " " + f.contains(ref));
-            if(!f.contains(ref)){
-                faults++;
-                queue.addLast(ref);
-                if(f.thereIsAnEmptyFrame()){
-                    System.out.println("empty");
-                    //f.set(f.getEmptyFrame(), ref);
-                }else{
-                    System.out.println("victim");
-                    int victim = queue.removeFirst();
-                    //f.swap(victim, ref);
-                }
-            }
 
-            past.copyAll(f);
-
-        }
-
-    }
     
     private int currentIndex =0; //to be used in GLOBAL resident set
     private List<Pair<Integer, Integer>> processIndex = new ArrayList<>();
@@ -60,6 +33,7 @@ public class FIFOPageReplacement extends ReplacementPolicy {
             for(int i = 0 ; i < pagesToPlace.size() ; i++){
                 retValue.add(frames.getFrames().get(currentIndex));
                 frames.placePage(pagesToPlace.get(i), currentIndex);
+                //TODO update pageTable
                 currentIndex++;
                 if(currentIndex == conf.secondaryMemoryPages){
                     currentIndex = 0;
@@ -75,10 +49,11 @@ public class FIFOPageReplacement extends ReplacementPolicy {
             
             for(int i = 0 ; i < pagesToPlace.size() ; i++){
                 retValue.add(scope.get(pIndex.getValue1()));
-                frames.placePage(
-                        pagesToPlace.get(i), 
-                        this.findIndex(scope.get(pIndex.getValue1()), frames));
-
+                //TODO update pageTable
+                int index = this.findIndex(scope.get(pIndex.getValue1()), frames);
+                frames.placePage(pagesToPlace.get(i), index);
+                proc.allocatePage(pagesToPlace.get(i), index);
+                
                 pIndex = pIndex.setAt1(pIndex.getValue1()+1);
                 if(pIndex.getValue1() == scope.size()){
                     pIndex.setAt1(0);

@@ -23,13 +23,23 @@ public class NextAvailablePlacement extends PlacementPolicy{
         PagesPlaceReplace retVal = new PagesPlaceReplace();
         
         List<Page> RAM = frames.getFrames();
+        int pageLimit;
+        if(conf.residentSetSize == GlobalConfig.ResidentSetSizeSetting.FIXED){
+            pageLimit = proc.getFrameSpace();
+        } else {
+            pageLimit = conf.varResSetSizeUpperLimit;
+        }
+        
         for(int i=lastIndex+1; i != lastIndex; i++){
             
             if(i >= RAM.size()){
                 i=0;
             }
             
-            if(pages != null && pages.size() > 0){    
+            //if limit reached or there arent pages to place: cant place no more
+            long a = proc.getPageTable().stream().filter(n -> n != null).count();
+            if(pages != null && pages.size() > 0
+                    && proc.getPageTable().stream().filter(n -> n != null).count() < pageLimit){    
                 if(RAM.get(i-1) == null){
                     RAM.set(i-1, pages.get(0));
                     Page tempPage = pages.remove(0);

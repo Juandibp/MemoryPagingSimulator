@@ -68,6 +68,12 @@ public class AlgorithmController {
         //cleaning policy, gets always called with pagesToClean
         //  and frames
         this.cleaningPolicy.clean(pagesToClean, frames, pages);
+        
+        //if global replacement scope update all processes pageTables
+        if(conf.replacementScope == GlobalConfig.ReplacementScopeSetting.GLOBAL){
+            for(Process p : this.processes) 
+                p.updatePageTable(frames);
+        }
     }
     
     public void addProcess(Process process) throws InsuficientMemoryException, LoadControlExcededException {
@@ -93,7 +99,7 @@ public class AlgorithmController {
         }
         this.processes.add(process);
         //sort processes by priority
-        this.processes.sort((a,b) -> a.getPriority() - b.getPriority());
+        this.processes.sort((b,a) -> a.getPriority() - b.getPriority());
         if(loadControlExceded) 
             throw new LoadControlExcededException("Se superó el nivel de multiprogramación. Algunos procesos no serán admitidos.");
     }
@@ -109,6 +115,8 @@ public class AlgorithmController {
             }
             process.setPageList(pageList);
         }
+        //since process input finished, index sorte processes are required
+        this.processes.sort((a,b) -> a.getId() - b.getId());
     }
     
     //setting up stuff all the way down
@@ -120,8 +128,6 @@ public class AlgorithmController {
         this.setFetchPolicy();
         this.setPlacementPolicy();
         this.setReplacementPolicy();
-        this.setResidentSetSize();
-        this.setReplacementScope();
         this.setCleaningPolicy();
     }
 
@@ -137,6 +143,7 @@ public class AlgorithmController {
                 this.fetchPolicy = new DemandFetchPolicy();
                 break;
             case PRE_PAGING:
+                this.fetchPolicy = new PreFetchPolicy();
                 break;
         }
     }
@@ -144,8 +151,10 @@ public class AlgorithmController {
     public void setPlacementPolicy() {
         switch (this.conf.placementPolicy){
             case FIRST_AVAILABLE:
+                this.placementpolicy = new FirstAvailablePlacement();
                 break;
             case NEXT_AVAILABLE:
+                this.placementpolicy = new NextAvailablePlacement();
                 break;
         }
     }    
@@ -170,27 +179,10 @@ public class AlgorithmController {
         }
     }
     
-    public void setResidentSetSize() {
-        switch (this.conf.residentSetSize){
-            case FIXED:
-                break;
-            case VARIABLE:
-                break;
-        }
-    }
-    
-    public void setReplacementScope() {
-        switch (this.conf.replacementScope){
-            case GLOBAL:
-                break;
-            case LOCAL:
-                break;
-        }
-    }
-    
     public void setCleaningPolicy() {
         switch(this.conf.cleaningPolicy) {
             case DEMAND:
+                this.cleaningPolicy = new DemandCleaning();
                 break;
             case PRE_CLEANING:
                 break;

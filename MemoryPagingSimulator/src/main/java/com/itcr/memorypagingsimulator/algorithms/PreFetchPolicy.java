@@ -31,10 +31,12 @@ public class PreFetchPolicy extends FetchPolicy {
             ArrayList<Page> retVal = new ArrayList<>();
             int pageAmount = conf.residentSetSize == GlobalConfig.ResidentSetSizeSetting.FIXED ? process.getFrameSpace() : conf.varResSetSizeLowerLimit ;
             if(pageAmount >= process.getPagesRequired()){
+                //theres more space for this process than neede
+                //bring all the pages
                 for (int i = 0; i < process.getPageList().size(); i++) {
                     //bring every page that isnt in main memory
                     if(process.getPageTable().get(i) == null) {
-                        Page p = process.getPageList().get(i).clonePage();
+                        Page p = pages.getPage(process.getPageId(i)).clonePage();
                         if(i == pageId){        //this is the page originaly referenced 
                             p.reference(writeOperation);
                             frames.reference(p);
@@ -43,11 +45,12 @@ public class PreFetchPolicy extends FetchPolicy {
                     }
                 }
             } else {
+                //theres not enough space for all the pages
                 int lower = (pageId+pageAmount) >= process.getPagesRequired() ? process.getPagesRequired() - pageAmount : pageId;
                 for(int i = lower; i < lower+pageAmount;i++){
                     //bring the amount of pages that arent in main memory after the one referenced
                     if(process.getPageTable().get(i) == null) {
-                        Page p = process.getPageList().get(i).clonePage();
+                        Page p = pages.getPage(process.getPageId(i)).clonePage();
                         if(i == pageId){//this is the page originaly referenced 
                             p.reference(writeOperation);
                             frames.reference(p);

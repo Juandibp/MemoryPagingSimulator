@@ -29,10 +29,10 @@ public class Process {
         this.frameSpace = frameSpace;
         this.frameSpaceLowerLimit = frameSpaceLowerLimit;
         this.pageTable = new ArrayList<>();
+        this.pageList = new ArrayList<>(pagesRequired);
         for (int i = 0; i < pagesRequired; i++) {
             pageTable.add(null);
         }
-        this.pageList = new ArrayList<>(pagesRequired);
         this.priority = priority;
     }
     
@@ -65,11 +65,22 @@ public class Process {
     }
     
     public void allocatePage(int localPageId, int mainMemoryLocation){
+        for(int i = 0 ; i < pageTable.size() ; i++){
+            Integer frame = this.pageTable.get(i);
+            if(frame != null && frame == mainMemoryLocation){
+                //the previous page at this location is removed
+                pageTable.set(i, null);
+            }
+        }
         this.pageTable.set(localPageId, mainMemoryLocation);
     }
 
     public void addPage(Page p, int index){
         this.pageList.set(index, p);
+    }
+    
+    public int getPageId(int localId) {
+        return this.pageList.get(localId).getId();
     }
 
     public ArrayList<Page> getPageList() {
@@ -100,9 +111,23 @@ public class Process {
         for(int j=0;j < this.getPageList().size();j++){
             if(this.getPageList().get(j).getId()== tempPage.getId()){
                 this.allocatePage(j, mainMemoryLoc);
+                break;
+            }
+        }
+    }
+    
+    public void updatePageTable(Frames frames){
+        for(int i = 0 ; i < this.pageList.size() ; i++){
+            this.pageTable.set(i, null);
+            for(int j = 0 ; j < frames.getFrames().size() ; j++){
+                Page p = pageList.get(i);
+                Page f = frames.getFrames().get(j);
+                if(p.getId() == f.getId()){
+                    this.pageTable.set(i, j);
+                    break;                    
                 }
             }
-                    
+        }
     }
 
     @Override

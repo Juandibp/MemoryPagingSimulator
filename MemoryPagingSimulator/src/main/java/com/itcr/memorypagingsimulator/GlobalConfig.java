@@ -124,6 +124,6 @@ public class GlobalConfig {
 
     @Override
     public String toString() {
-        return "GlobalConfig{" + "fetchPolicy=" + fetchPolicy + ", placementPolicy=" + placementPolicy + ", replacementPolicy=" + replacementPolicy + ", residentSetSize=" + residentSetSize + ", varResSetSizeLowerLimit=" + varResSetSizeLowerLimit + ", varResSetSizeUpperLimit=" + varResSetSizeUpperLimit + ", replacementScope=" + replacementScope + ", cleaningPolicy=" + cleaningPolicy + ", loadControl=" + loadControl + ", pageSize=" + pageSize + ", primaryMemoryFrames=" + primaryMemoryFrames + ", secondaryMemoryPages=" + secondaryMemoryPages + '}';
+        return "GlobalConfig{" + "fetchPolicy=" + fetchPolicy + ",\n\tplacementPolicy=" + placementPolicy + ", \n\treplacementPolicy=" + replacementPolicy + ", \n\tresidentSetSize=" + residentSetSize + ", \n\tvarResSetSizeLowerLimit=" + varResSetSizeLowerLimit + ", \n\tvarResSetSizeUpperLimit=" + varResSetSizeUpperLimit + ", \n\treplacementScope=" + replacementScope + ", \n\tcleaningPolicy=" + cleaningPolicy + ", \n\tloadControl=" + loadControl + ", \n\tpageSize=" + pageSize + ", \n\tprimaryMemoryFrames=" + primaryMemoryFrames + ", \n\tsecondaryMemoryPages=" + secondaryMemoryPages + "\n}";
     }
 }

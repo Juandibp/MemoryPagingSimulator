@@ -23,13 +23,7 @@ public abstract class ReplacementPolicy {
     protected int faults;
     protected int frames;
     
-    protected abstract void allocate();
-    
     public abstract ArrayList<Page> replace(GlobalConfig conf, List<Page> pagesToPlace, List<Page> pagesJustPlaced, Frames frames, Process proc);
-    
-    public List<Reference> call() throws Exception{
-        return allocateReferences();
-    }
     
     public int faults(){
         return faults;
@@ -55,10 +49,6 @@ public abstract class ReplacementPolicy {
         faults = 0;
     }
 
-    public List<Reference> allocateReferences() {
-        allocate();
-        return references;
-    }
     
     public int findIndex(Page victim, Frames frames){
         for (int i=0; i<frames.getFrames().size();i++){

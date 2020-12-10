@@ -18,20 +18,12 @@ public class Pages {
     private ArrayList<Page> pageList = new ArrayList<>();
     
     public Page getPage(int id){
-        for(Page p:pageList){
-            if(p.getId() == id){
-                return p;
-            }
-        }
-        return null;
+        return pageList.stream().filter(p -> p.getId() == id)
+                .findFirst().orElse(null);
     }
 
     public void addPage(Page page){
-       for(int i = 0; i < pageList.size(); i++){
-            if(pageList.get(i) == null){
-                pageList.set(i, page);
-            }
-        }
+        pageList.set(page.getId(), page);
     }
     
     public void replacePage(Page p, int index){
@@ -57,5 +49,8 @@ public class Pages {
     public Pages(int maxPages) {
         this.maxPages = maxPages;
         this.pageList = new ArrayList<>(maxPages);
+        for (int i = 0; i < maxPages; i++) {
+            this.pageList.add(null);           
+        }
     }
 }
