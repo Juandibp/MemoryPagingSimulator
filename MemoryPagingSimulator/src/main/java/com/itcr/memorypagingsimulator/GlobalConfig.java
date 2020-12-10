@@ -79,7 +79,7 @@ public class GlobalConfig {
                 ResidentSetSizeSetting.FIXED,
                 3,
                 20,
-                ReplacementScopeSetting.GLOBAL,
+                ReplacementScopeSetting.LOCAL,
                 CleaningPolicySetting.DEMAND,
                 5,
                 2000,

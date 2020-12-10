@@ -191,6 +191,11 @@ public class AlgorithmController {
                 break;
         }
     }
+
+    @Override
+    public String toString() {
+        return "AlgorithmController{" + "pages=" + pages + ", frames=" + frames + ", fetchPolicy=" + fetchPolicy + ", placementpolicy=" + placementpolicy + ", replacementPolicy=" + replacementPolicy + ", cleaningPolicy=" + cleaningPolicy + ", processes=" + processes + ", conf=" + conf + ", pageIdCount=" + pageIdCount + ", pageFaultCount=" + pageFaultCount + '}';
+    }
          
     //exceptions
     public class InsuficientMemoryException extends Exception {

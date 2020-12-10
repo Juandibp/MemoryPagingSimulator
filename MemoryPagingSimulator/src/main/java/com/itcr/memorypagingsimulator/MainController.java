@@ -7,6 +7,7 @@ package com.itcr.memorypagingsimulator;
 
 import com.formdev.flatlaf.FlatDarkLaf;
 import com.itcr.memorypagingsimulator.algorithms.AlgorithmController;
+import com.itcr.memorypagingsimulator.algorithms.FetchPolicy;
 import com.itcr.memorypagingsimulator.algorithms.models.Process;
 import java.awt.Color;
 import java.awt.Window;
@@ -30,6 +31,7 @@ public class MainController {
     private ProcessFileChooserDialog processFileChooserDialog;
     private ReferenceFileChooserDialog referenceFileChooserDialog;
     private GlobalConfig conf;
+    private int currentReferenceIndex = 0;
     private boolean processFileLoaded = false;
     private boolean referenceFileLoaded = false;
     
@@ -87,11 +89,54 @@ public class MainController {
     }
     
     public void loadProcesses(ArrayList<Process> processes){
-        this.algorithController = new AlgorithmController(processes, conf);
+        this.algorithController = new AlgorithmController(new ArrayList<>(), conf);
+        boolean hasShownError = false;
+        for(Process p : processes){
+            try {
+                this.algorithController.addProcess(p);
+            } catch (AlgorithmController.InsuficientMemoryException ex) {
+                if(!hasShownError){
+                    javax.swing.JOptionPane.showMessageDialog(null, ex.getMessage(), "Error",javax.swing.JOptionPane.ERROR_MESSAGE );
+                    hasShownError = true;
+                }
+                Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (AlgorithmController.LoadControlExcededException ex) {
+                if(!hasShownError){
+                    javax.swing.JOptionPane.showMessageDialog(null, ex.getMessage(), "Error",javax.swing.JOptionPane.ERROR_MESSAGE );
+                    hasShownError = true;
+                }                
+                Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        this.algorithController.allocatePages();
     }
     
     public void printConfig(){
         System.err.println("this.conf.toString(): " + this.conf.toString());
     }
+    
+    public void executeReferences(){
+        //TODO check if stuff is loaded
+        System.out.println(this.algorithController);
+        
+        this.referenceFileChooserDialog.getReferences().forEach(ref -> {
+            try {
+                this.algorithController.reference(ref.getValue0(), ref.getValue1(), ref.getValue2());
+            } catch (AlgorithmController.InvalidProcessIdException ex) {
+                Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (FetchPolicy.IllegalReferenceException ex) {
+                Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        });
+        this.displaymemory();
+    }
 
+    public void executeReferences(int until){
+        
+    }
+    
+    public void displaymemory(){
+        new MemoryStateDialog(this.mainWindow, false, this.algorithController.frames).setVisible(true);
+        new MemoryStateDialog(this.mainWindow, false, this.algorithController.pages).setVisible(true);
+    }
 }

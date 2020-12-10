@@ -26,6 +26,7 @@ public class ProcessFileChooserDialog extends javax.swing.JDialog {
     private Dimension initialSize;
     private File loadedFile;
     private ArrayList<Process> loadedProcesses;
+    private MainController controller;
     private GlobalConfig conf;
 
     /**
@@ -37,6 +38,7 @@ public class ProcessFileChooserDialog extends javax.swing.JDialog {
         this.initialSize = this.getSize();
         this.loadedProcesses = new ArrayList<>();
         this.conf = controller.getConf();
+        this.controller = controller;
     }
 
     /**
@@ -141,6 +143,9 @@ public class ProcessFileChooserDialog extends javax.swing.JDialog {
             
             System.out.println(this.loadedProcesses);
             showMessageDialog(null, "Processes loaded.");
+            this.setVisible(false);
+            this.controller.loadProcesses(loadedProcesses);
+
         } catch(FileNotFoundException ex) {
             showMessageDialog(null, "No existe el archivo seleccionado. Intente de nuevo.", "Error de archivo", javax.swing.JOptionPane.ERROR_MESSAGE);
             this.loadedFile = null;
