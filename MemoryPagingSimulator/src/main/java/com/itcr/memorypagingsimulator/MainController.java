@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFrame;
+import static javax.swing.JOptionPane.showMessageDialog;
 import javax.swing.UIDefaults;
 import javax.swing.UIManager;
 
@@ -36,6 +37,7 @@ public class MainController {
     private boolean referenceFileLoaded = false;
     private MemoryStateDialog mainMemoryDisplay;
     private MemoryStateDialog secondaryMemoryDisplay;
+    private ProcessDisplayDialog processDisplay;
     
     public MainController(){
         this.conf = new GlobalConfig();
@@ -45,6 +47,7 @@ public class MainController {
         this.referenceFileChooserDialog = new ReferenceFileChooserDialog(this.mainWindow, true, conf);
         this.mainMemoryDisplay = new MemoryStateDialog(this.mainWindow, false, true);
         this.secondaryMemoryDisplay = new MemoryStateDialog(this.mainWindow, false, false);
+        this.processDisplay = new ProcessDisplayDialog(this.mainWindow, false);
     }
     
     public static void main(String args[]) {        
@@ -121,6 +124,7 @@ public class MainController {
             } 
         }
         this.algorithController.allocatePages();
+        showMessageDialog(null, "Processes loaded.");
     }
     
     public void printConfig(){
@@ -129,6 +133,9 @@ public class MainController {
     
     public void executeReferences(){
         if(!canRead()) return;
+        if(this.currentReferenceIndex == 0){
+            this.resetState();
+        }
         var references = this.referenceFileChooserDialog.getReferences();
         for(int i = this.currentReferenceIndex; 
                 i < references.size();  
@@ -142,12 +149,15 @@ public class MainController {
                 Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
+        this.currentReferenceIndex = 0;
         this.displaymemory();
-        this.resetState();
     }
 
     public void executeReferences(int until){
         if(!canRead()) return;
+        if(this.currentReferenceIndex == 0){
+            this.resetState();
+        }
         var references = this.referenceFileChooserDialog.getReferences();
         for(int i = this.currentReferenceIndex; 
                 i < this.currentReferenceIndex + until && i < references.size();  
@@ -167,7 +177,7 @@ public class MainController {
             javax.swing.JOptionPane.showMessageDialog(null, 
                 "Already read all references in the loaded file. Next time you try it will start right at the beginning.", 
                 "Warning",javax.swing.JOptionPane.INFORMATION_MESSAGE );
-            this.resetState();
+            this.currentReferenceIndex = 0;
         }
     }
     
@@ -197,5 +207,23 @@ public class MainController {
         this.currentReferenceIndex = 0;
         this.algorithController = null;
         this.processFileChooserDialog.readProcesses();
+    }
+    
+    public void displayProcess(int id){
+        if(this.algorithController == null || this.algorithController.processes.isEmpty()) {
+            javax.swing.JOptionPane.showMessageDialog(null, 
+                "There aren't processes loaded right now. Try loading a process definition file.", 
+                "Error",javax.swing.JOptionPane.ERROR_MESSAGE );
+            return;
+        };
+        Process p = this.algorithController.processes.stream().filter(p1 -> p1.getId() == id).findFirst().orElse(null);
+        if(p != null){
+            this.processDisplay.setProcess(p, this.conf.residentSetSize == GlobalConfig.ResidentSetSizeSetting.FIXED);
+            this.processDisplay.setVisible(true);
+        } else {
+            javax.swing.JOptionPane.showMessageDialog(null, 
+                "There's no process with the specified id. Please try again.", 
+                "Error",javax.swing.JOptionPane.ERROR_MESSAGE );
+        }
     }
 }

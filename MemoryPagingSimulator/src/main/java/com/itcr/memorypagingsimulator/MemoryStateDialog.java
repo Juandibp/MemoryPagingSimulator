@@ -48,7 +48,7 @@ public class MemoryStateDialog extends javax.swing.JDialog {
     
     public void displayMemory(Pages frames){
         this.pages = frames;
-        String[] columns = new String [] {"Frame", "Page ID", "References", "Is dirty"};
+        String[] columns = new String [] {"Nº", "Page ID", "References", "Is dirty"};
         List<Object[]> ls = new ArrayList<>();
         for(int i = 0 ; i < pages.getPageList().size() ; i++){
             Page p = pages.getPageList().get(i);

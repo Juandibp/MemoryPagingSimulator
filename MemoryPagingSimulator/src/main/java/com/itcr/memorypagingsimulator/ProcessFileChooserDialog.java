@@ -143,7 +143,6 @@ public class ProcessFileChooserDialog extends javax.swing.JDialog {
             }
             
             System.out.println(this.loadedProcesses);
-            showMessageDialog(null, "Processes loaded.");
             this.setVisible(false);
             this.controller.loadProcesses(loadedProcesses);
 
