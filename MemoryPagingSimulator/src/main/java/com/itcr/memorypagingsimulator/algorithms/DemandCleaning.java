@@ -25,7 +25,6 @@ public class DemandCleaning extends CleaningPolicy {
             p.setDirty(false);
             pages.addPage(p);
         });
-        
     }
     
 }

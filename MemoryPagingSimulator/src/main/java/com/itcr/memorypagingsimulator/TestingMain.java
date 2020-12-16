@@ -47,10 +47,9 @@ public class TestingMain {
     
     public void runGtest(){
         try {
-            this.conf.replacementScope = GlobalConfig.ReplacementScopeSetting.LOCAL;
             this.conf.primaryMemoryFrames = 10;
             this.conf.secondaryMemoryPages = 50;
-            this.conf.placementPolicy = GlobalConfig.PlacementPolicySetting.NEXT_AVAILABLE;
+            this.conf.placementPolicy = GlobalConfig.PlacementPolicySetting.FIRST_AVAILABLE;
             ArrayList<Process> processes = new ArrayList<>();
             AlgorithmController testAlg = new AlgorithmController(processes, this.conf);
             

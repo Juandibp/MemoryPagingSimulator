@@ -101,6 +101,10 @@ public class ReferenceFileChooserDialog extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void referencesFileChooserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_referencesFileChooserActionPerformed
+        if(evt.getActionCommand().equalsIgnoreCase("CancelSelection")){
+            this.setVisible(false);
+            return;
+        }
         this.loadedFile = this.referencesFileChooser.getSelectedFile();
         if(!this.references.isEmpty() 
                 && javax.swing.JOptionPane.showConfirmDialog(null, "You already have processses loaded. Loading a new file will reset the program's state. Do you want to proceed?") == 0){
@@ -126,6 +130,7 @@ public class ReferenceFileChooserDialog extends javax.swing.JDialog {
             }
             
             System.out.println(this.references);
+            this.setVisible(false);
             showMessageDialog(null, "References loaded.");
         } catch(FileNotFoundException ex) {
             showMessageDialog(null, "No existe el archivo seleccionado. Intente de nuevo.", "Error de archivo", javax.swing.JOptionPane.ERROR_MESSAGE);

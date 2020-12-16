@@ -113,8 +113,9 @@ public class ProcessFileChooserDialog extends javax.swing.JDialog {
         }
     }//GEN-LAST:event_processFileChooserActionPerformed
 
-    private void readProcesses() {
+    public void readProcesses() {
         try {
+            this.loadedProcesses = new ArrayList<>();
             FileReader reader = new FileReader(this.loadedFile);
             BufferedReader buffedReader = new BufferedReader(reader);
             boolean varSetSize = conf.residentSetSize == GlobalConfig.ResidentSetSizeSetting.VARIABLE;

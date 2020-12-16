@@ -376,7 +376,7 @@ public class ConfigDialog extends javax.swing.JDialog {
                 true);
         this.varResidentSetSizeLowerLimitSpiner.setValue(this.conf.varResSetSizeLowerLimit);
         this.varResidentSetSizeUpperLimitSpiner.setValue(this.conf.varResSetSizeUpperLimit);
-        this.replacementPolicyComboBox.setSelectedItem(this.conf.replacementPolicy.name());
+        this.replacementScopeComboBox.setSelectedItem(this.conf.replacementScope.name());
         this.cleaningPolicyComboBox.setSelectedItem(this.conf.cleaningPolicy.name());
         this.loadControlSpiner.setValue(this.conf.loadControl);
         this.pageSizeSpinner.setValue(this.conf.pageSize);

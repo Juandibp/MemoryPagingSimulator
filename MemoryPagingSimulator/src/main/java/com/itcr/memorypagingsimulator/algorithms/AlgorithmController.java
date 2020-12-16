@@ -105,6 +105,8 @@ public class AlgorithmController {
     }
     
     public void allocatePages() {
+        //since process input finished, index sorte processes are convenient
+        this.processes.sort((a,b) -> a.getId() - b.getId());
         for(Process process: processes){
             ArrayList<Page> pageList = new ArrayList<>();
             for(int i = 0; i<process.getPagesRequired() ; i++ ){
@@ -115,8 +117,6 @@ public class AlgorithmController {
             }
             process.setPageList(pageList);
         }
-        //since process input finished, index sorte processes are required
-        this.processes.sort((a,b) -> a.getId() - b.getId());
     }
     
     //setting up stuff all the way down

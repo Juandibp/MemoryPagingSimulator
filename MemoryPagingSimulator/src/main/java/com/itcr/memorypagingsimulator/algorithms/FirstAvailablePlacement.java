@@ -24,8 +24,16 @@ public class FirstAvailablePlacement extends PlacementPolicy{
         PagesPlaceReplace retVal = new PagesPlaceReplace();
         List<Page> RAM = frames.getFrames();
         
+        int pageLimit;
+        if(conf.residentSetSize == GlobalConfig.ResidentSetSizeSetting.FIXED){
+            pageLimit = proc.getFrameSpace();
+        } else {
+            pageLimit = conf.varResSetSizeUpperLimit;
+        }
+                
         for(int i = 0; i<RAM.size(); i++){
-            if(pages != null && pages.size() > 0){    
+            if(pages != null && pages.size() > 0
+                    && proc.getPageTable().stream().filter(n -> n != null).count() < pageLimit){    
                 if(RAM.get(i) == null){
                     RAM.set(i, pages.get(0));
                     Page tempPage = pages.remove(0);

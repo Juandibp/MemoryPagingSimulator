@@ -23,26 +23,30 @@ public class MemoryStateDialog extends javax.swing.JDialog {
     /**
      * Creates new form MemoryStateDialog
      */
+    
+    public MemoryStateDialog(java.awt.Frame parent, boolean modal, boolean isMainMemory){
+        super(parent, modal);
+        initComponents();
+        this.setTitle(isMainMemory ? "Memoria principal" : "Memoria secundaria" );
+    }
+    
     public MemoryStateDialog(java.awt.Frame parent, boolean modal, Frames frames) {
         super(parent, modal);
         initComponents();
         this.frames = frames;
-        String[] columns = new String [] {"Frame", "Page ID", "References", "Is dirty"};
-        List<Object[]> ls = new ArrayList<>();
-        for(int i = 0 ; i < frames.getFrames().size() ; i++){
-            Page p = frames.getFrames().get(i);
-            if( p != null)
-                ls.add(new Object[] {i, p.getId(), p.getReferenceCounter(), p.isDirty()});
-            else
-                ls.add(new Object[] {"-", "-", "-", "-"});
-        }
-        this.memorytable.setModel(new JTable(ls.toArray(new Object[0][0]), columns).getModel());
+        this.displayMemory(frames);
         this.setTitle("Memoria principal");
     }
     
-        public MemoryStateDialog(java.awt.Frame parent, boolean modal, Pages frames) {
+    public MemoryStateDialog(java.awt.Frame parent, boolean modal, Pages frames) {
         super(parent, modal);
         initComponents();
+        this.pages = frames;
+        this.displayMemory(frames);
+        this.setTitle("Memoria secundaria");
+    }
+    
+    public void displayMemory(Pages frames){
         this.pages = frames;
         String[] columns = new String [] {"Frame", "Page ID", "References", "Is dirty"};
         List<Object[]> ls = new ArrayList<>();
@@ -54,8 +58,20 @@ public class MemoryStateDialog extends javax.swing.JDialog {
                 ls.add(new Object[] {i, "-", "-", "-"});
         }
         this.memorytable.setModel(new JTable(ls.toArray(new Object[0][0]), columns).getModel());
-        this.setTitle("Memoria secundaria");
-
+    }
+    
+    public void displayMemory(Frames frames){
+        this.frames = frames;
+        String[] columns = new String [] {"Frame", "Page ID", "References", "Is dirty"};
+        List<Object[]> ls = new ArrayList<>();
+        for(int i = 0 ; i < frames.getFrames().size() ; i++){
+            Page p = frames.getFrames().get(i);
+            if( p != null)
+                ls.add(new Object[] {i, p.getId(), p.getReferenceCounter(), p.isDirty()});
+            else
+                ls.add(new Object[] {"-", "-", "-", "-"});
+        }
+        this.memorytable.setModel(new JTable(ls.toArray(new Object[0][0]), columns).getModel());
     }
 
     /**

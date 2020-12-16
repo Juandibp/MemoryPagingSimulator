@@ -48,6 +48,7 @@ public class FIFOPageReplacement extends ReplacementPolicy {
                     .findFirst().orElse(Pair.with(proc.getId(), 0));
             
             for(int i = 0 ; i < pagesToPlace.size() ; i++){
+                System.out.println("com.itcr.memorypagingsimulator.algorithms.FIFOPageReplacement.replace()");
                 retValue.add(scope.get(pIndex.getValue1()));
                 //TODO update pageTable
                 int index = this.findIndex(scope.get(pIndex.getValue1()), frames);

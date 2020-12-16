@@ -83,8 +83,8 @@ public class GlobalConfig {
                 CleaningPolicySetting.DEMAND,
                 5,
                 2000,
-                500,
-                3000
+                10,
+                100
         );
     }
     

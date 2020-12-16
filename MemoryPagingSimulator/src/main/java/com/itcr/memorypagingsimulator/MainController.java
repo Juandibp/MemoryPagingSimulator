@@ -34,6 +34,8 @@ public class MainController {
     private int currentReferenceIndex = 0;
     private boolean processFileLoaded = false;
     private boolean referenceFileLoaded = false;
+    private MemoryStateDialog mainMemoryDisplay;
+    private MemoryStateDialog secondaryMemoryDisplay;
     
     public MainController(){
         this.conf = new GlobalConfig();
@@ -41,6 +43,8 @@ public class MainController {
         this.configDialog = new ConfigDialog(this.mainWindow, true, conf);
         this.processFileChooserDialog = new ProcessFileChooserDialog(this.mainWindow, true, this);
         this.referenceFileChooserDialog = new ReferenceFileChooserDialog(this.mainWindow, true, conf);
+        this.mainMemoryDisplay = new MemoryStateDialog(this.mainWindow, false, true);
+        this.secondaryMemoryDisplay = new MemoryStateDialog(this.mainWindow, false, false);
     }
     
     public static void main(String args[]) {        
@@ -86,11 +90,19 @@ public class MainController {
     
     public void updateConfig(GlobalConfig newConfig){
         this.conf = newConfig;
+        this.resetState();
     }
     
     public void loadProcesses(ArrayList<Process> processes){
-        this.algorithController = new AlgorithmController(new ArrayList<>(), conf);
         boolean hasShownError = false;
+        try{
+            this.algorithController = new AlgorithmController(new ArrayList<>(), conf);
+        }catch( IllegalArgumentException ex) {
+            javax.swing.JOptionPane.showMessageDialog(null, ex.getMessage(), "Error",javax.swing.JOptionPane.ERROR_MESSAGE );
+            this.openConfig();
+            this.loadProcesses(processes);
+            return;
+        }
         for(Process p : processes){
             try {
                 this.algorithController.addProcess(p);
@@ -106,7 +118,7 @@ public class MainController {
                     hasShownError = true;
                 }                
                 Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            } 
         }
         this.algorithController.allocatePages();
     }
@@ -116,10 +128,12 @@ public class MainController {
     }
     
     public void executeReferences(){
-        //TODO check if stuff is loaded
-        System.out.println(this.algorithController);
-        
-        this.referenceFileChooserDialog.getReferences().forEach(ref -> {
+        if(!canRead()) return;
+        var references = this.referenceFileChooserDialog.getReferences();
+        for(int i = this.currentReferenceIndex; 
+                i < references.size();  
+                i++){
+            var ref = references.get(i);
             try {
                 this.algorithController.reference(ref.getValue0(), ref.getValue1(), ref.getValue2());
             } catch (AlgorithmController.InvalidProcessIdException ex) {
@@ -127,16 +141,61 @@ public class MainController {
             } catch (FetchPolicy.IllegalReferenceException ex) {
                 Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
             }
-        });
+        }
         this.displaymemory();
+        this.resetState();
     }
 
     public void executeReferences(int until){
-        
+        if(!canRead()) return;
+        var references = this.referenceFileChooserDialog.getReferences();
+        for(int i = this.currentReferenceIndex; 
+                i < this.currentReferenceIndex + until && i < references.size();  
+                i++){
+            var ref = references.get(i);
+            try {
+                this.algorithController.reference(ref.getValue0(), ref.getValue1(), ref.getValue2());
+            } catch (AlgorithmController.InvalidProcessIdException ex) {
+                Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (FetchPolicy.IllegalReferenceException ex) {
+                Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        this.currentReferenceIndex += until;
+        this.displaymemory();
+        if(this.currentReferenceIndex >= references.size()){
+            javax.swing.JOptionPane.showMessageDialog(null, 
+                "Already read all references in the loaded file. Next time you try it will start right at the beginning.", 
+                "Warning",javax.swing.JOptionPane.INFORMATION_MESSAGE );
+            this.resetState();
+        }
+    }
+    
+    public boolean canRead() {
+        boolean processesEmpty = this.algorithController == null || this.algorithController.processes.isEmpty();
+        boolean referencesEmpty= this.referenceFileChooserDialog.getReferences().isEmpty();
+        if(!processesEmpty
+                 && !referencesEmpty)
+            return true;
+        javax.swing.JOptionPane.showMessageDialog(null, 
+                "You need to load "+(processesEmpty? "the processes definition file " : "" )
+                        + (processesEmpty && referencesEmpty ?"and " :"")
+                        + (referencesEmpty ?"the references definition file ":"")
+                        + "in order to proceed. Please load the files required."
+                , "Warning",javax.swing.JOptionPane.WARNING_MESSAGE );
+        return false;
     }
     
     public void displaymemory(){
-        new MemoryStateDialog(this.mainWindow, false, this.algorithController.frames).setVisible(true);
-        new MemoryStateDialog(this.mainWindow, false, this.algorithController.pages).setVisible(true);
+        this.mainMemoryDisplay.displayMemory(this.algorithController.frames);
+        this.secondaryMemoryDisplay.displayMemory(this.algorithController.pages);
+        this.mainMemoryDisplay.setVisible(true);
+        this.secondaryMemoryDisplay.setVisible(true);
+    }
+    
+    public void resetState(){
+        this.currentReferenceIndex = 0;
+        this.algorithController = null;
+        this.processFileChooserDialog.readProcesses();
     }
 }
